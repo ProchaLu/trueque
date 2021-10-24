@@ -1,11 +1,9 @@
-import Footer from '../components/Footer';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
 
 export default function Index() {
   return (
-    <>
-      <Navbar />
-      <Footer />
-    </>
+    <Layout>
+      <div>TEXT</div>
+    </Layout>
   );
 }

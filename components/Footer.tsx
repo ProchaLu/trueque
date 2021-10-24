@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-export default function Footer() {
+const Footer = () => {
   return (
     <div className="bg-blue-dark text-bright">
-      <div className="max-w-6xl  mx-auto px-4 py-10 lg:py-20">
+      <div className="max-w-6xl  mx-auto px-4 py-5 lg:py-10">
         <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between md:items-center mt-8">
           <div>
             <p>&copy; Lukas Prochazka. All Rights Reserved.</p>
@@ -56,4 +56,6 @@ export default function Footer() {
       </div>
     </div>
   );
-}
+};
+
+export default Footer;
