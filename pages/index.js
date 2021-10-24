@@ -1,3 +1,11 @@
-export default function Home() {
-  return <div>hello world</div>;
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+
+export default function Index() {
+  return (
+    <>
+      <Navbar />
+      <Footer />
+    </>
+  );
 }
