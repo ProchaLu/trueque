@@ -3,10 +3,14 @@ import Link from 'next/link';
 const Footer = () => {
   return (
     <div className="bg-blue-dark text-bright">
-      <div className="max-w-6xl  mx-auto px-4 py-5 lg:py-10">
+      <div className="max-w-7xl  mx-auto px-4 py-5 lg:py-10">
         <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between md:items-center mt-8">
           <div>
-            <p>&copy; Lukas Prochazka. All Rights Reserved.</p>
+            <p>
+              &copy;{' '}
+              <Link href="https://github.com/ProchaLu">Lukas Prochazka.</Link>{' '}
+              All Rights Reserved.
+            </p>
           </div>
           <div className="space-x-4 flex flex-row items-center">
             <Link href="https://www.instagram.com/lucavanfeinsten/">

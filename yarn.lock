@@ -4099,6 +4099,11 @@ table@^6.0.9:
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
 
+tailwind-mobile@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/tailwind-mobile/-/tailwind-mobile-0.5.0.tgz#e95e0bdff450d1d603b629bc3f3d4d9b1a545adf"
+  integrity sha512-Y5P+GNsQTjwJtscS5P0jhTeyQM6DCeI+QkV+n3IKzPrHAVPsSgDsnNTWX4Qg7Oyd0CPQ2qdyrs0MiWFqZDhVdw==
+
 tailwindcss@^2.2.17:
   version "2.2.17"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-2.2.17.tgz#c6332731f9ff1b6628ff589c95c38685347775e3"

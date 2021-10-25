@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { Fragment } from 'react';
 
 const navigation = [
-  { name: 'Item Page', href: '#', current: false },
-  { name: 'Trade Overview', href: '#', current: false },
-  { name: 'Wantlist', href: '#', current: false },
+  { name: 'Item Page', href: '/itempage', current: false },
+  { name: 'Add Item', href: '/addItem', current: false },
+  { name: 'Trade Overview', href: '/tradeOverview', current: false },
+  { name: 'Wantlist', href: '/wantlist', current: false },
 ];
 
 function classNames(...classes) {
@@ -15,7 +16,7 @@ function classNames(...classes) {
 
 const Navbar = () => {
   return (
-    <Disclosure as="nav" className="bg-bright">
+    <Disclosure as="nav" className="bg-blue-dark">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 bg-blue-dark">
@@ -36,12 +37,12 @@ const Navbar = () => {
                   <img
                     className="block lg:hidden h-8 w-auto"
                     src="/images/logo_white_large.png"
-                    alt="LOGO"
+                    alt="trueque Logo"
                   />
                   <img
                     className="hidden lg:block h-8 w-auto"
                     src="/images/logo_white_large.png"
-                    alt="LOGO"
+                    alt="trueque Logo"
                   />
                 </div>
                 <div className="hidden sm:block sm:ml-6">
@@ -52,7 +53,7 @@ const Navbar = () => {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? 'bg-blue-light text-dark'
+                            ? 'bg-blue-light text-bright'
                             : 'text-bright hover:bg-blue-light hover:text-dark',
                           'px-3 py-2 rounded-md text-base font-medium',
                         )}
@@ -65,18 +66,19 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="bg-blue-dark p-1 rounded-full text-bright hover:text-bright focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-bright"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-
+                <Link href="/notifications" passHref>
+                  <button
+                    type="button"
+                    className="bg-blue-dark p-1 rounded-full text-bright hover:text-bright focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-bright focus:ring-bright"
+                  >
+                    <span className="sr-only">View notifications</span>
+                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                  </button>
+                </Link>
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
                   <div>
-                    <Menu.Button className="bg-dark flex text-base rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                    <Menu.Button className="bg-dark flex text-base rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white focus:ring-white">
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
@@ -129,7 +131,6 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
@@ -140,7 +141,7 @@ const Navbar = () => {
                   className={classNames(
                     item.current
                       ? 'bg-light text-dark'
-                      : 'text-dark hover:bg-blue-light hover:text-dark',
+                      : 'text-bright hover:bg-blue-light hover:text-dark',
                     'block px-3 py-2 rounded-md text-base font-medium',
                   )}
                   aria-current={item.current ? 'page' : undefined}

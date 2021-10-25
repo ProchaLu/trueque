@@ -1,7 +1,7 @@
 import 'tailwindcss/tailwind.css';
 import Head from 'next/head';
 
-function MyApp({ Component, pageProps }) {
+const MyApp = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
@@ -10,11 +10,13 @@ function MyApp({ Component, pageProps }) {
           name="viewport"
           content="initial-scale=1.0, width=device-width"
           lang="en"
+          title="trueque"
+          description="exchange platform for everybody, exchange items with just view clicks"
         />
       </Head>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </>
   );
-}
+};
 
 export default MyApp;
