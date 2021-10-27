@@ -5,13 +5,13 @@ import Layout from '../components/Layout';
 const AddItem = () => {
   const [priceRange, setPriceRange] = useState(10);
   const [itemName, setItemName] = useState('');
-  const [itemPrice, setItemPrice] = useState();
+  const [itemPrice, setItemPrice] = useState(0);
   const [itemDescription, setItemDescription] = useState('');
 
   return (
     <Layout>
       <div className="max-w-7xl my-2 mx-auto px-4 py-5 text-xl lg:py-10 ">
-        <h2 className="mb-10 text-center text-3xl font-bold">ADD ITEM</h2>
+        <h1 className="mb-10 text-center text-3xl font-bold">ADD ITEM</h1>
         <div className="mb-10">
           <label
             htmlFor="itemName"
@@ -24,12 +24,12 @@ const AddItem = () => {
             id="itemName"
             placeholder="Item Name"
             required
-            onChange={(e) => setItemName(e.target.value)}
+            onChange={(e) => setItemName(e.currentTarget.value)}
           />
         </div>
         <div className="mb-10">
           <label
-            htmlFor="itemName"
+            htmlFor="itemPrice"
             className="block text-dark text-normal font-bold mb-2"
           >
             Price in €
@@ -40,15 +40,15 @@ const AddItem = () => {
             type="number"
             placeholder="Price"
             required
-            onChange={(e) => setItemPrice(e.target.value)}
+            onChange={(e) => setItemPrice(e.currentTarget.value)}
           />
         </div>
         <div className="mb-10">
           <label
-            htmlFor="itemName"
+            htmlFor="itemDescription"
             className="block text-dark text-normal font-bold mb-2"
           >
-            Description{' '}
+            Description
             <span className="text-sm font-normal">
               (optional. Keep it short)
             </span>
@@ -58,7 +58,7 @@ const AddItem = () => {
             id="itemDescription"
             placeholder="Description"
             required
-            onChange={(e) => setItemDescription(e.target.value)}
+            onChange={(e) => setItemDescription(e.currentTarget.value)}
           />
         </div>
         <div className="font-bold">
@@ -75,7 +75,7 @@ const AddItem = () => {
                     step={1}
                     min={0}
                     max={100}
-                    onChange={(e) => setPriceRange(e.target.value)}
+                    onChange={(e) => setPriceRange(e.currentTarget.value)}
                   />
                   <span>100%</span>
                 </>
@@ -84,7 +84,7 @@ const AddItem = () => {
           </List>
         </div>
         <div>
-          {itemName && Number(itemPrice) > 0 ? (
+          {itemName && itemPrice > 0 ? (
             <button
               className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
               onClick={() =>

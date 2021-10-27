@@ -1,7 +1,10 @@
 import { Disclosure } from '@headlessui/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const NavbarBeforeLogin = () => {
+  const router = useRouter();
+
   return (
     <Disclosure as="nav" className="bg-blue-dark">
       <div className="flex-1 flex items-center justify-center p-4">
@@ -12,7 +15,7 @@ const NavbarBeforeLogin = () => {
             alt="trueque Logo"
           />
         </div>
-        <Link href="/" passHref>
+        <Link href="/login/" passHref>
           <a className="absolute right-0 mx-4 text-bright px-3 py-2 rounded-md text-base font-medium hover:bg-blue-light hover:text-dark">
             LOGIN
           </a>
