@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import LayoutBeforeLogin from '../components/LayoutBeforeLogin';

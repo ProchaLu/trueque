@@ -60,7 +60,7 @@ export async function getUsers() {
       mail,
       address
     FROM
-      users;
+      users
   `;
   return users.map((user) => {
     // Convert the snake case favorite_color to favoriteColor
@@ -69,6 +69,8 @@ export async function getUsers() {
 }
 
 export async function getUser(id: number) {
+  if (!id) return undefined;
+
   const [user] = await sql<[User]>`
     SELECT
       id,
@@ -144,7 +146,7 @@ export async function insertUser({
     INSERT INTO users
       (username, password_hash, name, mail, address)
     VALUES
-      (${username}, ${name}, ${passwordHash}, ${mail}, ${address})
+      (${username}, ${passwordHash},${name}, ${mail}, ${address})
     RETURNING
       id,
       username,
@@ -215,4 +217,40 @@ export async function createSession(token: string, userId: number) {
   *
 `;
   return camelcaseKeys(session);
+}
+
+export async function deleteExpiredSession() {
+  const sessions = await sql<Session[]>`
+  DELETE FROM
+  sessions
+  WHERE expiry_timestamp < NOW()
+  RETURNING *
+  `;
+  return sessions.map((session) => camelcaseKeys(session))[0];
+}
+
+export async function deleteSessionByToken(token: string) {
+  const sessions = await sql<Session[]>`
+    DELETE FROM
+      sessions
+    WHERE
+      token = ${token}
+    RETURNING *
+  `;
+  return sessions.map((session) => camelcaseKeys(session))[0];
+}
+
+export async function getValidSessionByToken(token: string) {
+  if (!token) return undefined;
+
+  const sessions = await sql<Session[]>`
+    SELECT
+    *
+    FROM
+    sessions
+    WHERE
+    token = ${token} and
+    expiry_timestamp > NOW()
+  `;
+  return sessions.map((session) => camelcaseKeys(session))[0];
 }

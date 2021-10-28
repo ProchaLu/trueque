@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import { useState } from 'react';
 import LayoutBeforeLogin from '../components/LayoutBeforeLogin';
@@ -84,3 +85,27 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { getValidSessionByToken } = await import('../util/database');
+
+  const sessionToken = context.req.cookies.sessionTokenRegister;
+
+  const session = await getValidSessionByToken(sessionToken);
+
+  if (session) {
+    // Redirect the user when they have a session
+    // token by returning an object with the `redirect` prop
+    // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
+    return {
+      redirect: {
+        destination: '/itempage',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}

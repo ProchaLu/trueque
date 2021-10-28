@@ -21,11 +21,12 @@ export default async function registerHandler(
   req: NextApiRequest,
   res: NextApiResponse<RegisterResponse>,
 ) {
+  console.log(req.body);
   if (
     !req.body.username ||
     !req.body.password ||
     !req.body.name ||
-    !req.body.email
+    !req.body.mail
   ) {
     res.status(400).send({
       errors: [
