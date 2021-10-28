@@ -21,7 +21,6 @@ export default async function registerHandler(
   req: NextApiRequest,
   res: NextApiResponse<RegisterResponse>,
 ) {
-  console.log(req.body);
   if (
     !req.body.username ||
     !req.body.password ||
