@@ -1,10 +1,7 @@
 import { Disclosure } from '@headlessui/react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 const NavbarBeforeLogin = () => {
-  const router = useRouter();
-
   return (
     <Disclosure as="nav" className="bg-blue-dark">
       <div className="flex-1 flex items-center justify-center p-4">

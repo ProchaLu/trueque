@@ -11,7 +11,8 @@ export type RegisterRequest = {
   username: string;
   password: string;
   name: string;
-  email: string;
+  mail: string;
+  address: string;
 };
 
 export type RegisterResponse = { errors: Errors } | { user: User };
@@ -40,6 +41,12 @@ export default async function registerHandler(
   try {
     const username = req.body.username;
 
+    const name = req.body.name;
+
+    const mail = req.body.mail;
+
+    const address = req.body.address;
+
     const existingUser = await getUserWithPasswordHashByUsername(username);
 
     if (existingUser) {
@@ -53,7 +60,10 @@ export default async function registerHandler(
 
     const user = await insertUser({
       username: username,
+      name: name,
       passwordHash: passwordHash,
+      mail: mail,
+      address: address,
     });
 
     res.send({ user: user });

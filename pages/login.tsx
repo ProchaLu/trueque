@@ -63,6 +63,11 @@ const LoginPage = () => {
               />
             </label>
           </div>
+          <div className="text-red mb-5">
+            {errors.map((error) => (
+              <div key={`error-${error.message}`}>{error.message}</div>
+            ))}
+          </div>
           <button className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
             LOG IN
           </button>
@@ -73,12 +78,6 @@ const LoginPage = () => {
         >
           BACK
         </button>
-
-        <div className="text-dark">
-          {errors.map((error) => (
-            <div key={`error-${error.message}`}>{error.message}</div>
-          ))}
-        </div>
       </div>
     </LayoutBeforeLogin>
   );

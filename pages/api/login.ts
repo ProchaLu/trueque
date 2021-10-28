@@ -1,6 +1,12 @@
+import crypto from 'node:crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { verifyPassword } from '../../util/auth';
-import { getUserWithPasswordHashByUsername, User } from '../../util/database';
+import { createSerializedRegisterSessionTokenCookie } from '../../util/cookies';
+import {
+  createSession,
+  getUserWithPasswordHashByUsername,
+  User,
+} from '../../util/database';
 import { Errors } from '../../util/types';
 
 export type LoginResponse = { errors: Errors } | { user: User };
@@ -44,12 +50,19 @@ export default async function loginHandler(
       return;
     }
 
+    // create the token and add the user id to the session table
+    const token = crypto.randomBytes(64).toString('base64');
+
+    const newSession = await createSession(token, userWithPasswordHash.id);
+
+    const cookie = createSerializedRegisterSessionTokenCookie(newSession.token);
+
     // Important! Removing the password
     // hash from the response sent back
     // to the user
     const { passwordHash, ...user } = userWithPasswordHash;
 
-    res.send({ user: user });
+    res.status(200).setHeader('set-Cookie', cookie).send({ user: user });
   } catch (err) {
     res.status(500).send({ errors: [{ message: (err as Error).message }] });
   }

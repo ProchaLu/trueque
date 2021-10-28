@@ -16,6 +16,12 @@ module.exports = {
       bright: {
         DEFAULT: '#fff',
       },
+      red: {
+        DEFAULT: '#FF4136',
+      },
+      green: {
+        DEFAULT: '#2ECC40',
+      },
       extend: {},
     },
     extend: {},

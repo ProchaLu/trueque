@@ -10,6 +10,13 @@ export type User = {
   address: string | null;
 };
 
+export type Session = {
+  id: number;
+  token: string;
+  userId: number;
+  expiryTimestamp: Date;
+};
+
 export type UserWithPasswordHash = User & {
   passwordHash: string;
 };
@@ -84,7 +91,7 @@ export async function getUserWithPasswordHashByUsername(username: string) {
       name,
       username,
       mail,
-      address
+      address,
       password_hash
     FROM
       users
@@ -123,19 +130,25 @@ export async function createUser({
 export async function insertUser({
   username,
   passwordHash,
+  name,
+  mail,
+  address,
 }: {
   username: string;
   passwordHash: string;
+  name: string;
+  mail: string;
+  address: string;
 }) {
   const [user] = await sql<[User]>`
     INSERT INTO users
-      (username, password_hash)
+      (username, password_hash, name, mail, address)
     VALUES
-      (${username}, ${passwordHash})
+      (${username}, ${name}, ${passwordHash}, ${mail}, ${address})
     RETURNING
       id,
-      name,
       username,
+      name,
       mail,
       address;
   `;
@@ -190,4 +203,16 @@ export async function deleteUserById(id: number) {
       address
   `;
   return camelcaseKeys(users[0]);
+}
+
+export async function createSession(token: string, userId: number) {
+  const [session] = await sql<[Session]>`
+  INSERT INTO sessions
+    (token, user_id)
+  VALUES
+  (${token}, ${userId})
+  RETURNING
+  *
+`;
+  return camelcaseKeys(session);
 }
