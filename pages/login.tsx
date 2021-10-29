@@ -39,7 +39,7 @@ const LoginPage = (props: { refreshUsername: () => void }) => {
             const destination =
               typeof router.query.returnTo === 'string' && router.query.returnTo
                 ? router.query.returnTo
-                : `/`;
+                : `/users/${loginJson.user.id}`;
 
             props.refreshUsername();
 
