@@ -1,11 +1,14 @@
 import { GetServerSidePropsContext } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import LayoutBeforeLogin from '../components/LayoutBeforeLogin';
 import { Errors } from '../util/types';
 import { RegisterResponse } from './api/register';
 
-const RegisterPage = () => {
+type Props = { refreshUsername: () => void; csrfToken: string };
+
+const RegisterPage = (props: Props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -36,6 +39,7 @@ const RegisterPage = () => {
                 name: name,
                 mail: mail,
                 address: address,
+                csrfToken: props.csrfToken,
               }),
             });
 
@@ -47,7 +51,14 @@ const RegisterPage = () => {
               return;
             }
 
-            router.push('/itempage/');
+            const destination =
+              typeof router.query.returnTo === 'string' && router.query.returnTo
+                ? router.query.returnTo
+                : `/users/${registerJson.user.id}`;
+
+            props.refreshUsername();
+
+            router.push(destination);
           }}
         >
           <div className="mb-10">
@@ -119,20 +130,55 @@ const RegisterPage = () => {
             REGISTER
           </button>
         </form>
-        <button
-          onClick={
-            () =>
-              console.log(
-                `${username}, ${name}, ${password}, ${mail}, ${address} `,
-              ) /* router.push('/') */
-          }
-          className=" w-full mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
-        >
-          BACK
-        </button>
+        <Link href="/" passHref>
+          <button className=" w-full mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
+            BACK
+          </button>
+        </Link>
       </div>
     </LayoutBeforeLogin>
   );
 };
 
 export default RegisterPage;
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { getValidSessionByToken } = await import('../util/database');
+  const { createToken } = await import('../util/csrf');
+
+  // Redirect from HTTP to HTTPS on Heroku
+  if (
+    context.req.headers.host &&
+    context.req.headers['x-forwarded-proto'] &&
+    context.req.headers['x-forwarded-proto'] !== 'https'
+  ) {
+    return {
+      redirect: {
+        destination: `https://${context.req.headers.host}/register`,
+        permanent: true,
+      },
+    };
+  }
+
+  const sessionToken = context.req.cookies.sessionToken;
+
+  const session = await getValidSessionByToken(sessionToken);
+
+  if (session) {
+    // Redirect the user when they have a session
+    // token by returning an object with the `redirect` prop
+    // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      csrfToken: createToken(),
+    },
+  };
+}

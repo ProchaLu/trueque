@@ -1,9 +1,10 @@
 import crypto from 'node:crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { verifyPassword } from '../../util/auth';
-import { createSerializedRegisterSessionTokenCookie } from '../../util/cookies';
+import { createSerializedRegistersessionTokenCookie } from '../../util/cookies';
 import {
   createSession,
+  deleteExpiredSessions,
   getUserWithPasswordHashByUsername,
   User,
 } from '../../util/database';
@@ -50,12 +51,15 @@ export default async function loginHandler(
       return;
     }
 
+    // clean old sessions
+    deleteExpiredSessions();
+
     // create the token and add the user id to the session table
     const token = crypto.randomBytes(64).toString('base64');
 
     const newSession = await createSession(token, userWithPasswordHash.id);
 
-    const cookie = createSerializedRegisterSessionTokenCookie(newSession.token);
+    const cookie = createSerializedRegistersessionTokenCookie(newSession.token);
 
     // Important! Removing the password
     // hash from the response sent back

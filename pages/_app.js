@@ -1,7 +1,24 @@
 import 'tailwindcss/tailwind.css';
 import Head from 'next/head';
+import { useCallback, useEffect, useState } from 'react';
 
 const MyApp = ({ Component, pageProps }) => {
+  const [username, setUsername] = useState();
+
+  const refreshUsername = useCallback(async () => {
+    const response = await fetch('/api/profile');
+    const profile = await response.json();
+
+    if ('errors' in profile) {
+      return;
+    }
+    setUsername(profile.user.username);
+  }, []);
+
+  useEffect(() => {
+    refreshUsername();
+  }, []);
+
   return (
     <>
       <Head>
@@ -9,12 +26,15 @@ const MyApp = ({ Component, pageProps }) => {
         <meta
           name="viewport"
           content="initial-scale=1.0, width=device-width"
-          lang="en"
           title="trueque"
           description="exchange platform for everybody, exchange items with just view clicks"
         />
       </Head>
-      <Component {...pageProps} />
+      <Component
+        {...pageProps}
+        username={username}
+        refreshUsername={refreshUsername}
+      />
     </>
   );
 };

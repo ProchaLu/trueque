@@ -103,6 +103,26 @@ export async function getUserWithPasswordHashByUsername(username: string) {
   return user && camelcaseKeys(user);
 }
 
+export async function getUserBySessionToken(sessionToken: string | undefined) {
+  if (!sessionToken) return undefined;
+
+  const [user] = await sql<[User | undefined]>`
+    SELECT
+      users.id,
+      users.username,
+      users.name,
+      users.mail,
+      users.address
+    FROM
+      sessions,
+      users
+    WHERE
+      sessions.token = ${sessionToken} AND
+      sessions.user_id = users.id
+  `;
+  return user && camelcaseKeys(user);
+}
+
 export async function createUser({
   name,
   username,
@@ -243,7 +263,7 @@ export async function deleteSessionByToken(token: string) {
 export async function getValidSessionByToken(token: string) {
   if (!token) return undefined;
 
-  const sessions = await sql<Session[]>`
+  const [session] = await sql<[Session | undefined]>`
     SELECT
     *
     FROM
@@ -252,5 +272,17 @@ export async function getValidSessionByToken(token: string) {
     token = ${token} and
     expiry_timestamp > NOW()
   `;
-  return sessions.map((session) => camelcaseKeys(session))[0];
+  return session && camelcaseKeys(session);
+}
+
+export async function deleteExpiredSessions() {
+  const sessions = await sql<Session[]>`
+    DELETE FROM
+      sessions
+    WHERE
+      expiry_timestamp < NOW()
+    RETURNING *
+  `;
+
+  return sessions.map((session) => camelcaseKeys(session));
 }

@@ -14,7 +14,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const Navbar = () => {
+const Navbar = (props) => {
   return (
     <Disclosure as="nav" className="bg-blue-dark">
       {({ open }) => (
@@ -113,7 +113,7 @@ const Navbar = () => {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <Link href="/">
+                          <Link href="/logout">
                             <a
                               className={classNames(
                                 active ? 'bg-blue-light' : '',

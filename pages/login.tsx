@@ -5,7 +5,7 @@ import LayoutBeforeLogin from '../components/LayoutBeforeLogin';
 import { Errors } from '../util/types';
 import { LoginResponse } from './api/login';
 
-const LoginPage = () => {
+const LoginPage = (props: { refreshUsername: () => void }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
@@ -36,7 +36,14 @@ const LoginPage = () => {
               setErrors(loginJson.errors);
               return;
             }
-            router.push('/itempage/');
+            const destination =
+              typeof router.query.returnTo === 'string' && router.query.returnTo
+                ? router.query.returnTo
+                : `/`;
+
+            props.refreshUsername();
+
+            router.push(destination);
           }}
         >
           <div className="mb-10">
@@ -89,7 +96,21 @@ export default LoginPage;
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { getValidSessionByToken } = await import('../util/database');
 
-  const sessionToken = context.req.cookies.sessionTokenRegister;
+  // Redirect from HTTP to HTTPS on Heroku
+  if (
+    context.req.headers.host &&
+    context.req.headers['x-forwarded-proto'] &&
+    context.req.headers['x-forwarded-proto'] !== 'https'
+  ) {
+    return {
+      redirect: {
+        destination: `https://${context.req.headers.host}/login`,
+        permanent: true,
+      },
+    };
+  }
+
+  const sessionToken = context.req.cookies.sessionToken;
 
   const session = await getValidSessionByToken(sessionToken);
 
@@ -99,7 +120,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
     return {
       redirect: {
-        destination: '/itempage',
+        destination: '/',
         permanent: false,
       },
     };

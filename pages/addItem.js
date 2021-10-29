@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { List, ListItem, Range } from 'tailwind-mobile/react';
 import Layout from '../components/Layout';
@@ -97,9 +98,38 @@ const AddItem = () => {
             ''
           )}
         </div>
+        <Link href="/itempage/" passHref>
+          <button className="w-full mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
+            BACK
+          </button>
+        </Link>
       </div>
     </Layout>
   );
 };
 
 export default AddItem;
+
+export async function getServerSideProps(context) {
+  const { getValidSessionByToken } = await import('../util/database');
+
+  const sessionToken = context.req.cookies.sessionToken;
+
+  const session = await getValidSessionByToken(sessionToken);
+
+  if (!session) {
+    // Redirect the user when they have a session
+    // token by returning an object with the `redirect` prop
+    // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
+    return {
+      redirect: {
+        destination: '/login?returnTo=/addItem',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
