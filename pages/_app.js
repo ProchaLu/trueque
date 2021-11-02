@@ -9,6 +9,7 @@ const MyApp = ({ Component, pageProps }) => {
     const response = await fetch('/api/profile');
     const profile = await response.json();
 
+    console.log(profile);
     if ('errors' in profile) {
       return;
     }
@@ -17,7 +18,7 @@ const MyApp = ({ Component, pageProps }) => {
 
   useEffect(() => {
     refreshUsername();
-  }, []);
+  }, [refreshUsername]);
 
   return (
     <>

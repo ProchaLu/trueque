@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { List, ListItem, Range } from 'tailwind-mobile/react';
 import Layout from '../components/Layout';
 
-const AddItem = () => {
+const AddItem = (props) => {
   const [priceRange, setPriceRange] = useState(10);
   const [itemName, setItemName] = useState('');
   const [itemPrice, setItemPrice] = useState(0);
@@ -178,8 +178,6 @@ export async function getServerSideProps(context) {
       },
     };
   }
-
-
 
   return {
     props: {},
