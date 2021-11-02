@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { List, ListItem, Range } from 'tailwind-mobile/react';
@@ -9,24 +8,26 @@ const AddItem = () => {
   const [itemName, setItemName] = useState('');
   const [itemPrice, setItemPrice] = useState(0);
   const [itemDescription, setItemDescription] = useState('');
-  const [imageSelected, setImageSelected] = useState(null);
-  const [currentImage, setCurrentImage] = useState([]);
+  const [image, setImage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const uploadImage = async () => {
+  const uploadImage = async (e) => {
+    const files = e.currentTarget.files;
     const formData = new FormData();
-    formData.append('file', imageSelected);
+    formData.append('file', files[0]);
     formData.append('upload_preset', 'truequeUpload');
+    setLoading(true);
+    const res = await fetch(
+      '	https://api.cloudinary.com/v1_1/trueque-image/upload',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    );
+    const file = await res.json();
 
-    await fetch('https://api.cloudinary.com/v1_1/trueque-image/image/upload', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-        setCurrentImage(() => response.secure_url);
-      })
-      .catch((error) => console.log(error));
+    setImage(file.secure_url);
+    setLoading(false);
   };
 
   return (
@@ -53,23 +54,23 @@ const AddItem = () => {
             htmlFor="picture"
             className="block text-dark text-normal font-bold mb-2"
           >
-            Picture
+            Image
           </label>
           <input
             className="w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
             id="file"
             type="file"
             required
-            onChange={(event) => {
-              setImageSelected(event.currentTarget.files[0]);
-            }}
+            placeholder="Upload an image"
+            onChange={uploadImage}
           />
-          <button
-            onClick={uploadImage}
-            className="w-3/12 bg-blue text-bright text-xl font-bold py-2 px-10 mt-2 rounded hover:bg-blue-light hover:text-dark"
-          >
-            Upload Image
-          </button>
+          <div className="w-1/2 mx-auto">
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <img src={image} className="mt-4" alt="upload" />
+            )}
+          </div>
         </div>
         <div className="mb-10">
           <label
@@ -128,13 +129,13 @@ const AddItem = () => {
           </List>
         </div>
         <div>
-          {itemName && itemPrice && currentImage > 0 ? (
+          {itemName && itemPrice > 0 ? (
             <button
               className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
               onClick={() =>
                 console.log(
                   itemName,
-                  currentImage,
+                  image,
                   itemPrice,
                   itemDescription,
                   priceRange,
@@ -177,6 +178,8 @@ export async function getServerSideProps(context) {
       },
     };
   }
+
+
 
   return {
     props: {},
