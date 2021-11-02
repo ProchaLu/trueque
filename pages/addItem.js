@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { List, ListItem, Range } from 'tailwind-mobile/react';
@@ -8,6 +9,25 @@ const AddItem = () => {
   const [itemName, setItemName] = useState('');
   const [itemPrice, setItemPrice] = useState(0);
   const [itemDescription, setItemDescription] = useState('');
+  const [imageSelected, setImageSelected] = useState(null);
+  const [currentImage, setCurrentImage] = useState([]);
+
+  const uploadImage = async () => {
+    const formData = new FormData();
+    formData.append('file', imageSelected);
+    formData.append('upload_preset', 'truequeUpload');
+
+    await fetch('https://api.cloudinary.com/v1_1/trueque-image/image/upload', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        setCurrentImage(() => response.secure_url);
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <Layout>
@@ -27,6 +47,29 @@ const AddItem = () => {
             required
             onChange={(e) => setItemName(e.currentTarget.value)}
           />
+        </div>
+        <div className="mb-10">
+          <label
+            htmlFor="picture"
+            className="block text-dark text-normal font-bold mb-2"
+          >
+            Picture
+          </label>
+          <input
+            className="w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
+            id="file"
+            type="file"
+            required
+            onChange={(event) => {
+              setImageSelected(event.currentTarget.files[0]);
+            }}
+          />
+          <button
+            onClick={uploadImage}
+            className="w-3/12 bg-blue text-bright text-xl font-bold py-2 px-10 mt-2 rounded hover:bg-blue-light hover:text-dark"
+          >
+            Upload Image
+          </button>
         </div>
         <div className="mb-10">
           <label
@@ -85,11 +128,17 @@ const AddItem = () => {
           </List>
         </div>
         <div>
-          {itemName && itemPrice > 0 ? (
+          {itemName && itemPrice && currentImage > 0 ? (
             <button
               className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
               onClick={() =>
-                console.log(itemName, itemPrice, itemDescription, priceRange)
+                console.log(
+                  itemName,
+                  currentImage,
+                  itemPrice,
+                  itemDescription,
+                  priceRange,
+                )
               }
             >
               ADD ITEM
