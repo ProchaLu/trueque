@@ -32,8 +32,6 @@ export default async function addItemHandler(
     return;
   }
   try {
-    console.log(req.body);
-
     const itemName = req.body.itemName;
 
     const userId = req.body.userId;

@@ -12,6 +12,7 @@ export type User = {
 
 export type Item = {
   id: number;
+  userId: number;
   itemName: string;
   itemPrice: number;
   image: string;
@@ -328,4 +329,21 @@ export async function insertItem({
       description;
   `;
   return camelcaseKeys(item);
+}
+
+export async function getItemsFromUserId(userId: number) {
+  if (!userId) return undefined;
+
+  const items = await sql<[Item]>`
+    SELECT
+      *
+    FROM
+      items
+    WHERE
+      user_id = ${userId};
+  `;
+
+  return items.map((item) => {
+    return camelcaseKeys(item);
+  });
 }

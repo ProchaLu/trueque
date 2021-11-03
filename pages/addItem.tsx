@@ -23,8 +23,6 @@ const AddItem = (props: Props) => {
 
   const router = useRouter();
 
-  console.log('cookies userID', props.userId);
-
   const userId = props.userId;
 
   const uploadImage = async (event) => {
