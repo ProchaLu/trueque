@@ -7,9 +7,10 @@ import Layout from '../components/Layout';
 import { Errors } from '../util/types';
 import { RegisterResponse } from './api/itemRegister';
 
-type Props = { refreshUsername: () => void };
+type Props = { refreshUsername: () => void; refreshUserId: () => void };
 
 const AddItem = (props: Props) => {
+  console.log('user:', props.username, props.userId);
   const [priceRange, setPriceRange] = useState(10);
   const [itemName, setItemName] = useState('');
   const [itemPrice, setItemPrice] = useState(0);
@@ -45,7 +46,6 @@ const AddItem = (props: Props) => {
         <h1 className="mb-10 text-center text-3xl font-bold">ADD ITEM</h1>
         <form
           onSubmit={async (event) => {
-            console.log('add item test');
             event.preventDefault();
             const registerResponse = await fetch('/api/itemRegister', {
               method: 'POST',
@@ -74,6 +74,7 @@ const AddItem = (props: Props) => {
                 : '/itempage';
 
             props.refreshUsername();
+            props.refreshUserId();
 
             router.push(destination);
           }}
