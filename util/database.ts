@@ -10,6 +10,15 @@ export type User = {
   address: string | null;
 };
 
+export type Item = {
+  id: number;
+  itemName: string;
+  itemPrice: number;
+  image: string;
+  description: string;
+  priceRange: number;
+};
+
 export type Session = {
   id: number;
   token: string;
@@ -285,4 +294,35 @@ export async function deleteExpiredSessions() {
   `;
 
   return sessions.map((session) => camelcaseKeys(session));
+}
+
+// ITEMS
+
+export async function insertItem({
+  itemName,
+  image,
+  itemPrice,
+  priceRange,
+  description,
+}: {
+  itemName: string;
+  image: string;
+  itemPrice: number;
+  priceRange: number;
+  description: string;
+}) {
+  const [item] = await sql<[Item]>`
+    INSERT INTO items
+      (item_name, image, item_price, price_range, description)
+    VALUES
+      (${itemName}, ${image}, ${itemPrice}, ${priceRange}, ${description})
+    RETURNING
+      id,
+      item_name,
+      image,
+      item_price,
+      price_range,
+      description;
+  `;
+  return camelcaseKeys(item);
 }
