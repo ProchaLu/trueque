@@ -300,12 +300,14 @@ export async function deleteExpiredSessions() {
 
 export async function insertItem({
   itemName,
+  userId,
   image,
   itemPrice,
   priceRange,
   description,
 }: {
   itemName: string;
+  userId: number;
   image: string;
   itemPrice: number;
   priceRange: number;
@@ -313,12 +315,13 @@ export async function insertItem({
 }) {
   const [item] = await sql<[Item]>`
     INSERT INTO items
-      (item_name, image, item_price, price_range, description)
+      (item_name, user_id, image, item_price, price_range, description)
     VALUES
-      (${itemName}, ${image}, ${itemPrice}, ${priceRange}, ${description})
+      (${itemName}, ${userId}, ${image}, ${itemPrice}, ${priceRange}, ${description})
     RETURNING
       id,
       item_name,
+      user_id,
       image,
       item_price,
       price_range,

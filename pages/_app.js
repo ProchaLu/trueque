@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 const MyApp = ({ Component, pageProps }) => {
   const [username, setUsername] = useState();
-  const [userId, setUserId] = useState();
+  /* const [userId, setUserId] = useState(); */
 
   const refreshUsername = useCallback(async () => {
     const response = await fetch('/api/profile');
@@ -21,7 +21,7 @@ const MyApp = ({ Component, pageProps }) => {
     refreshUsername();
   }, [refreshUsername]);
 
-  const refreshUserId = useCallback(async () => {
+  /*   const refreshUserId = useCallback(async () => {
     const response = await fetch('/api/profile');
     const profile = await response.json();
 
@@ -33,7 +33,7 @@ const MyApp = ({ Component, pageProps }) => {
 
   useEffect(() => {
     refreshUserId();
-  }, [refreshUserId]);
+  }, [refreshUserId]); */
 
   return (
     <>
@@ -49,7 +49,6 @@ const MyApp = ({ Component, pageProps }) => {
       <Component
         {...pageProps}
         username={username}
-        userId={userId}
         refreshUsername={refreshUsername}
       />
     </>

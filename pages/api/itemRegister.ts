@@ -4,6 +4,7 @@ import { Errors } from '../../util/types';
 
 export type RegisterRequest = {
   itemName: string;
+  userId: number;
   itemPrice: number;
   image: string;
   description: string;
@@ -35,6 +36,8 @@ export default async function addItemHandler(
 
     const itemName = req.body.itemName;
 
+    const userId = req.body.userId;
+
     const image = req.body.image;
 
     const itemPrice = req.body.itemPrice;
@@ -45,6 +48,7 @@ export default async function addItemHandler(
 
     const item = await insertItem({
       itemName: itemName,
+      userId: userId,
       image: image,
       itemPrice: itemPrice,
       priceRange: priceRange,

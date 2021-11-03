@@ -7,10 +7,12 @@ import Layout from '../components/Layout';
 import { Errors } from '../util/types';
 import { RegisterResponse } from './api/itemRegister';
 
-type Props = { refreshUsername: () => void; refreshUserId: () => void };
+type Props = {
+  refreshUsername: () => void;
+  userId: number;
+};
 
 const AddItem = (props: Props) => {
-  console.log('user:', props.username, props.userId);
   const [priceRange, setPriceRange] = useState(10);
   const [itemName, setItemName] = useState('');
   const [itemPrice, setItemPrice] = useState(0);
@@ -20,6 +22,10 @@ const AddItem = (props: Props) => {
   const [errors, setErrors] = useState<Errors>([]);
 
   const router = useRouter();
+
+  console.log('cookies userID', props.userId);
+
+  const userId = props.userId;
 
   const uploadImage = async (event) => {
     const files = event.currentTarget.files;
@@ -54,6 +60,7 @@ const AddItem = (props: Props) => {
               },
               body: JSON.stringify({
                 itemName: itemName,
+                userId: userId,
                 itemPrice: itemPrice,
                 description: description,
                 priceRange: priceRange,
@@ -74,7 +81,6 @@ const AddItem = (props: Props) => {
                 : '/itempage';
 
             props.refreshUsername();
-            props.refreshUserId();
 
             router.push(destination);
           }}
@@ -180,10 +186,7 @@ const AddItem = (props: Props) => {
           </div>
           <div>
             {itemName && itemPrice > 0 ? (
-              <button
-                onClick={() => router.push('/itempage')}
-                className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
-              >
+              <button className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
                 ADD ITEM
               </button>
             ) : (
@@ -210,6 +213,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const session = await getValidSessionByToken(sessionToken);
 
+  const userId = session.userId;
+
   if (!session) {
     // Redirect the user when they have a session
     // token by returning an object with the `redirect` prop
@@ -223,6 +228,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   return {
-    props: {},
+    props: { userId },
   };
 }
