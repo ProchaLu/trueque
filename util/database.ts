@@ -20,6 +20,12 @@ export type Item = {
   priceRange: number;
 };
 
+export type Wantlist = {
+  userId: number;
+  itemUserId: number;
+  itemId: number;
+};
+
 export type Session = {
   id: number;
   token: string;
@@ -391,4 +397,29 @@ WHERE user_id NOT IN (${userId})
 LIMIT 1
 `;
   return camelcaseKeys(items[0]);
+}
+
+// WANTLIST
+
+export async function insertItemtoWantlist({
+  userId,
+  itemUserId,
+  itemId,
+}: {
+  userId: number;
+  itemUserId: number;
+  itemId: number;
+}) {
+  const [wantlist] = await sql<[Wantlist]>`
+      INSERT INTO wantlist
+        (user_id, item_user_id, item_id)
+      VALUES
+        (${userId}, ${itemUserId},  ${itemId})
+      RETURNING
+        id,
+        user_id,
+        item_user_id,
+        item_id;
+    `;
+  return camelcaseKeys(wantlist);
 }
