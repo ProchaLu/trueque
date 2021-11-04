@@ -347,3 +347,15 @@ export async function getItemsFromUserId(userId: number) {
     return camelcaseKeys(item);
   });
 }
+
+export async function deleteItemByItemId(id: number) {
+  const items = await sql`
+    DELETE FROM
+      items
+    WHERE
+      id = ${id}
+    RETURNING
+      *;
+  `;
+  return camelcaseKeys(items[0]);
+}

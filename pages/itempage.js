@@ -1,9 +1,10 @@
+import Link from 'next/link';
 import Layout from '../components/Layout';
 
 const Itempage = (props) => {
   return (
     <Layout>
-      <div className="max-w-7xl  mx-auto px-4 py-5 lg:py-10">
+      <div className="max-w-7xl  mx-auto px-2 py-2 lg:py-10">
         <h1 className="mb-10 text-center text-3xl font-bold">ITEM PAGE</h1>
         <h2 className="mb-10 text-center text-2xl font-bold">
           YOUR ITEMS TO TRADE
@@ -12,12 +13,35 @@ const Itempage = (props) => {
           {props.items.map((item) => {
             return (
               <div key={`item-li-${item.id}`}>
-                <div className="bg-blue-light m-4 p-4">
-                  <h3 className="text-2xl font-bold">{item.itemName}</h3>
-                  <img src={item.image} alt={item.itemName} />
-                  <div>{item.itemPrice}</div>
-                  <div>{item.description}</div>
+                <div className="bg-blue-light">
+                  <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
+                    <div className="my-auto">
+                      <h3 className="text-2xl font-bold">{item.itemName}</h3>
+                      <div>{item.itemPrice}€</div>
+                      <div>{item.description}</div>
+                    </div>
+                    <div className="w-full">
+                      <img
+                        className="object-scale-down"
+                        src={item.image}
+                        alt={item.itemName}
+                      />
+                    </div>
+                  </div>
                 </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <button className="w-auto bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark">
+                    EDIT
+                  </button>
+                  <button className="w-auto bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark">
+                    DELETE
+                  </button>
+                </div>
+                <Link href="/itemExchange/" passHref>
+                  <button className="w-full bg-blue-dark text-bright text-xl font-bold py-2 mb-10 px-10 rounded hover:bg-blue-light hover:text-dark">
+                    START TRADING
+                  </button>
+                </Link>
               </div>
             );
           })}

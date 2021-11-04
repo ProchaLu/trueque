@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 const MyApp = ({ Component, pageProps }) => {
   const [username, setUsername] = useState();
-  /* const [userId, setUserId] = useState(); */
 
   const refreshUsername = useCallback(async () => {
     const response = await fetch('/api/profile');
@@ -19,20 +18,6 @@ const MyApp = ({ Component, pageProps }) => {
   useEffect(() => {
     refreshUsername();
   }, [refreshUsername]);
-
-  /*   const refreshUserId = useCallback(async () => {
-    const response = await fetch('/api/profile');
-    const profile = await response.json();
-
-    if ('errors' in profile) {
-      return;
-    }
-    setUserId(profile.user.id);
-  }, []);
-
-  useEffect(() => {
-    refreshUserId();
-  }, [refreshUserId]); */
 
   return (
     <>
