@@ -4,7 +4,9 @@ import Layout from '../components/Layout';
 const Wantlist = () => {
   return (
     <Layout>
-      <div className="max-w-7xl  mx-auto px-4 py-5 lg:py-10">WANTLIST</div>
+      <div className="max-w-7xl  mx-auto px-4 py-5 lg:py-10">
+        <h1 className="mb-10 text-center text-3xl font-bold">WANTLIST</h1>
+      </div>
     </Layout>
   );
 };
