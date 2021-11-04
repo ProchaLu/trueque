@@ -359,3 +359,36 @@ export async function deleteItemByItemId(id: number) {
   `;
   return camelcaseKeys(items[0]);
 }
+
+export async function getItemsNotUserId(userId: number) {
+  if (!userId) return undefined;
+  const items = await sql<[Item]>`
+  SELECT
+    *
+  FROM
+    items
+  WHERE
+    user_id NOT IN (${userId});
+`;
+
+  return items.map((item) => {
+    return camelcaseKeys(item);
+  });
+}
+
+export async function getItemsRandomNotUserId(userId: number) {
+  if (!userId) return undefined;
+  const items = await sql<[Item]>`
+ SELECT
+	*
+FROM
+	items
+WHERE user_id NOT IN (${userId})
+  OFFSET floor(random() * (
+		SELECT
+			COUNT(*)
+			FROM items))
+LIMIT 1
+`;
+  return camelcaseKeys(items[0]);
+}

@@ -30,10 +30,16 @@ const Itempage = (props) => {
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <button className="w-auto bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark">
+                  <button
+                    onClick={async () => await console.log('EDIT')}
+                    className="w-auto bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
+                  >
                     EDIT
                   </button>
-                  <button className="w-auto bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark">
+                  <button
+                    onClick={async () => await console.log('DELETE')}
+                    className="w-auto bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
+                  >
                     DELETE
                   </button>
                 </div>
