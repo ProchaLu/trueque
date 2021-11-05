@@ -184,7 +184,7 @@ const AddItem = (props: Props) => {
           </div>
           <div>
             {itemName && itemPrice > 0 ? (
-              <button className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
+              <button className="w-full bg-blue shadow-lg text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
                 ADD ITEM
               </button>
             ) : (
@@ -192,7 +192,7 @@ const AddItem = (props: Props) => {
             )}
           </div>
           <Link href="/itempage/" passHref>
-            <button className="w-full mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
+            <button className="w-full shadow-lg mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
               BACK
             </button>
           </Link>

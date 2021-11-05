@@ -42,7 +42,7 @@ const Index = () => {
         <div>
           <button
             onClick={() => router.push('/register/')}
-            className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
+            className="w-full bg-blue text-bright shadow-lg text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
           >
             SIGN UP
           </button>

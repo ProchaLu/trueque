@@ -55,13 +55,13 @@ const ItemExchange = (props) => {
         <div className="grid grid-cols-2 gap-2 place-items-center justify-items-center">
           <button
             onClick={() => router.reload()}
-            className="rounded-full h-40 w-40 flex items-center justify-center bg-red text-bright text-3xl"
+            className="rounded-full h-40 w-40 border-2 border-dark flex items-center justify-center bg-red text-bright text-3xl"
           >
             NO
           </button>
           <button
             onClick={onClickYes}
-            className="rounded-full h-40 w-40 flex items-center justify-center bg-green text-bright text-3xl"
+            className="rounded-full h-40 w-40 border-2 border-dark  flex items-center justify-center bg-green text-bright text-3xl"
           >
             YES
           </button>

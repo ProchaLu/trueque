@@ -76,13 +76,13 @@ const LoginPage = (props: { refreshUsername: () => void }) => {
               <div key={`error-${error.message}`}>{error.message}</div>
             ))}
           </div>
-          <button className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
+          <button className="w-full shadow-lg bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
             LOG IN
           </button>
         </form>
         <button
           onClick={() => router.push('/')}
-          className="w-full mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
+          className="w-full shadow-lg mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
         >
           BACK
         </button>

@@ -32,19 +32,19 @@ const Itempage = (props) => {
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     onClick={async () => await console.log('EDIT')}
-                    className="w-auto bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
+                    className="w-auto shadow-lg bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
                   >
                     EDIT
                   </button>
                   <button
                     onClick={async () => await console.log('DELETE')}
-                    className="w-auto bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
+                    className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
                   >
                     DELETE
                   </button>
                 </div>
                 <Link href="/itemExchange/" passHref>
-                  <button className="w-full bg-blue-dark text-bright text-xl font-bold py-2 mb-10 px-10 rounded hover:bg-blue-light hover:text-dark">
+                  <button className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-10 px-10 rounded hover:bg-blue-light hover:text-dark">
                     START TRADING
                   </button>
                 </Link>

@@ -18,19 +18,11 @@ export default async function addWantlistHandler(
   res: NextApiResponse<RegisterResponse>,
 ) {
   try {
-    console.log(req.body);
-
     const userId = req.body.userId;
-
-    console.log(userId);
 
     const itemUserId = req.body.itemUserId;
 
-    console.log(itemUserId);
-
     const itemId = req.body.itemId;
-
-    console.log(itemId);
 
     const wantlist = await insertItemtoWantlist({
       userId: userId,
