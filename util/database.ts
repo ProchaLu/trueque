@@ -449,3 +449,45 @@ export async function getWantlistByUserId(userId: number) {
     return camelcaseKeys(list);
   });
 }
+
+export async function getWantlistbyItemUserId(itemUserId: number) {
+  if (!itemUserId) return undefined;
+  const wantlist = await sql<Wantlist[]>`
+    SELECT
+      *
+    FROM
+      wantlist
+    WHERE
+      item_user_id = ${itemUserId};
+  `;
+  return wantlist.map((list) => {
+    return camelcaseKeys(list);
+  });
+}
+
+// JOINT TABLE
+
+export async function getAll(userId: number, itemId: number) {
+  if (!userId) return undefined;
+  if (!itemId) return undefined;
+  const [allList] = await sql<All[]>`
+    SELECT
+      users.id,
+      users.username,
+      users.mail,
+      items.item_name,
+      items.image,
+      items.item_price,
+      items.description
+    FROM
+      users,
+      items
+     WHERE
+      users.id = ${userId} AND
+      items.id = ${itemId}
+  `;
+  /*   return allList.map((list) => {
+    return camelcaseKeys(list);
+  }); */
+  return camelcaseKeys(allList);
+}

@@ -45,10 +45,10 @@ const ItemExchange = (props) => {
   return (
     <Layout>
       <div className="max-w-7xl text-center  mx-auto p-4 md:p-10">
-        <h1 className="mb-10 text-3xl font-bold">ITEM EXCHANGE</h1>
-        <div className="text-left text-2xl font-bold">
-          {props.item.itemName}
-        </div>
+        <h1 className="mb-2 text-3xl font-bold">ITEM EXCHANGE</h1>
+        <h2 className="text-2xl text-left font-bold">exchange "ITEM" for:</h2>
+
+        <div className="text-left text-xl font-bold">{props.item.itemName}</div>
         <div className="text-left font-bold">{props.item.itemPrice}€</div>
         <div className="border my-5 mx-auto max-w-lg">
           <img src={props.item.image} alt={props.item.itemName} />
