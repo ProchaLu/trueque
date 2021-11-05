@@ -399,6 +399,18 @@ LIMIT 1
   return camelcaseKeys(items[0]);
 }
 
+export async function getItemByItemId(itemId: number) {
+  if (!itemId) return undefined;
+  const [items] = await sql<[Item]>`
+  SELECT
+    *
+  FROM
+    items
+  WHERE id = ${itemId};
+  `;
+  return camelcaseKeys(items);
+}
+
 // WANTLIST
 
 export async function insertItemtoWantlist({
@@ -422,4 +434,18 @@ export async function insertItemtoWantlist({
         item_id;
     `;
   return camelcaseKeys(wantlist);
+}
+
+export async function getWantlistByUserId(userId: number) {
+  if (!userId) return undefined;
+  const wantlist = await sql<[Wantlist]>`
+    SELECT
+      *
+    FROM
+    wantlist
+    WHERE user_id = ${userId};
+  `;
+  return wantlist.map((list) => {
+    return camelcaseKeys(list);
+  });
 }

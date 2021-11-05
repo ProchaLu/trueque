@@ -46,12 +46,13 @@ const ItemExchange = (props) => {
     <Layout>
       <div className="max-w-7xl text-center  mx-auto p-4 md:p-10">
         <h1 className="mb-10 text-3xl font-bold">ITEM EXCHANGE</h1>
-        <div className="text-left">{props.item.itemName}</div>
-        <div className="">{props.item.itemPrice}</div>
-        <div className="border my-10 mx-auto max-w-lg">
+        <div className="text-left text-2xl font-bold">
+          {props.item.itemName}
+        </div>
+        <div className="text-left font-bold">{props.item.itemPrice}€</div>
+        <div className="border my-5 mx-auto max-w-lg">
           <img src={props.item.image} alt={props.item.itemName} />
         </div>
-        <div className="m-10">{props.item.description}</div>
         <div className="grid grid-cols-2 gap-2 place-items-center justify-items-center">
           <button
             onClick={() => router.reload()}
@@ -65,11 +66,14 @@ const ItemExchange = (props) => {
           >
             YES
           </button>
-          <div className="text-red mb-5">
+          <div className="text-red mb-2">
             {errors.map((error) => (
               <div key={`error-${error.message}`}>{error.message}</div>
             ))}
           </div>
+        </div>
+        <div className="m-5 text-left">
+          Description: {props.item.description}
         </div>
       </div>
     </Layout>
