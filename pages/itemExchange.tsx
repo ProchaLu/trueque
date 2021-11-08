@@ -2,6 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
+import { getItemByItemId } from '../util/database';
 import { Errors } from '../util/types';
 import { RegisterResponse } from './api/wantlist';
 
@@ -13,6 +14,11 @@ const ItemExchange = (props) => {
   const onClickYes = async (event) => {
     event.preventDefault();
 
+    console.log('user', props.user);
+    console.log('exchange item', props.exchangeItem.id);
+    console.log('changed user', props.item.userId);
+    console.log('changed item', props.item.id);
+
     const registerResponse = await fetch('api/wantlist', {
       method: 'POST',
       headers: {
@@ -20,13 +26,11 @@ const ItemExchange = (props) => {
       },
       body: JSON.stringify({
         userId: props.user,
+        userExchangeItemId: props.exchangeItem.id,
         itemUserId: props.item.userId,
         itemId: props.item.id,
       }),
     });
-    console.log(props.user);
-    console.log(props.item.userId);
-    console.log(props.item.id);
     const addWantlistJson = (await registerResponse.json()) as RegisterResponse;
     if ('errors' in addWantlistJson) {
       setErrors(addWantlistJson.errors);
@@ -46,7 +50,9 @@ const ItemExchange = (props) => {
     <Layout>
       <div className="max-w-7xl text-center  mx-auto p-4 md:p-10">
         <h1 className="mb-2 text-3xl font-bold">ITEM EXCHANGE</h1>
-        <h2 className="text-2xl text-left font-bold">exchange "ITEM" for:</h2>
+        <h2 className="text-2xl text-left font-bold">
+          exchange "{props.exchangeItem.itemName}" for:
+        </h2>
 
         <div className="text-left text-xl font-bold">{props.item.itemName}</div>
         <div className="text-left font-bold">{props.item.itemPrice}€</div>
@@ -87,6 +93,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     '../util/database'
   );
 
+  const exchangeItemId = context.req.cookies.item;
+
+  const exchangeItem = await getItemByItemId(exchangeItemId);
+
+  console.log(exchangeItem);
+
   const sessionToken = context.req.cookies.sessionToken;
 
   const session = await getValidSessionByToken(sessionToken);
@@ -110,6 +122,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const user = session.userId;
 
   return {
-    props: { item, user },
+    props: { item, user, exchangeItem },
   };
 }

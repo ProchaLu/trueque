@@ -430,21 +430,24 @@ export async function getItemByItemId(itemId: number) {
 
 export async function insertItemtoWantlist({
   userId,
+  userExchangeItemId,
   itemUserId,
   itemId,
 }: {
   userId: number;
+  userExchangeItemId: number;
   itemUserId: number;
   itemId: number;
 }) {
   const [wantlist] = await sql<[Wantlist]>`
       INSERT INTO wantlist
-        (user_id, item_user_id, item_id)
+        (user_id, user_exchange_item_id, item_user_id, item_id)
       VALUES
-        (${userId}, ${itemUserId},  ${itemId})
+        (${userId}, ${userExchangeItemId}, ${itemUserId},  ${itemId})
       RETURNING
         id,
         user_id,
+        user_exchange_item_id,
         item_user_id,
         item_id;
     `;

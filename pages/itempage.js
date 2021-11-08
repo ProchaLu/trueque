@@ -1,7 +1,18 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
+import { setParsedCookie } from '../util/cookies';
 
 const Itempage = (props) => {
+  const router = useRouter();
+
+  const addItemToCookie = (props) => {
+    let newItems;
+    newItems = [{ id: props.item.id }];
+    setParsedCookie('item', newItems);
+    router.push('/itemExchange/');
+  };
+
   return (
     <Layout>
       <div className="max-w-7xl  mx-auto px-2 py-2 lg:py-10">
@@ -43,11 +54,18 @@ const Itempage = (props) => {
                     DELETE
                   </button>
                 </div>
-                <Link href="/itemExchange/" passHref>
-                  <button className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-10 px-10 rounded hover:bg-blue-light hover:text-dark">
-                    START SEARCHING
-                  </button>
-                </Link>
+                {/* <Link href="/itemExchange/" passHref> */}
+                <button
+                  onClick={() => {
+                    const newItems = item.id;
+                    setParsedCookie('item', newItems);
+                    router.push('/itemExchange/');
+                  }}
+                  className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-10 px-10 rounded hover:bg-blue-light hover:text-dark"
+                >
+                  START SEARCHING
+                </button>
+                {/*  </Link> */}
               </div>
             );
           })}

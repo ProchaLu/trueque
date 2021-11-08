@@ -4,6 +4,7 @@ import { Errors } from '../../util/types';
 
 export type RegisterRequest = {
   userId: number;
+  userExchangeItemId: number;
   itemUserId: number;
   itemId: number;
 };
@@ -20,12 +21,15 @@ export default async function addWantlistHandler(
   try {
     const userId = req.body.userId;
 
+    const userExchangeItemId = req.body.userExchangeItemId;
+
     const itemUserId = req.body.itemUserId;
 
     const itemId = req.body.itemId;
 
     const wantlist = await insertItemtoWantlist({
       userId: userId,
+      userExchangeItemId: userExchangeItemId,
       itemUserId: itemUserId,
       itemId: itemId,
     });

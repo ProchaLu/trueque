@@ -68,6 +68,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   console.log(notificationsArray);
 
   return {
-    props: { notificationsArray },
+    props: { notificationsArray, notificationUserList },
   };
 }
