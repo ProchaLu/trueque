@@ -485,20 +485,45 @@ export async function getWantlistbyItemUserId(itemUserId: number) {
 
 // JOINT TABLE
 
-export async function getAll(userId: number, itemId: number) {
+export async function getWantlistAll(userId: number, itemId: number) {
   if (!userId) return undefined;
   if (!itemId) return undefined;
   const [allList] = await sql<All[]>`
     SELECT
-      users.id,
-      users.username,
-      users.mail,
-      items.item_name,
-      items.image,
-      items.item_price,
-      items.description
+      users.id AS want_user_id,
+      users.username AS want_user_name,
+      users.mail AS want_user_mail,
+      items.item_name AS want_user_item_name,
+      items.image AS want_user_item_Image,
+      items.item_price AS want_user_item_price,
+      items.description AS want_user_item_description
     FROM
-      users,
+    users,
+      items
+     WHERE
+      users.id = ${userId} AND
+      items.id = ${itemId}
+  `;
+  /*   return allList.map((list) => {
+    return camelcaseKeys(list);
+  }); */
+  return camelcaseKeys(allList);
+}
+
+export async function getHavelistAll(userId: number, itemId: number) {
+  if (!userId) return undefined;
+  if (!itemId) return undefined;
+  const [allList] = await sql<All[]>`
+    SELECT
+      users.id AS have_user_id,
+      users.username AS have_user_name,
+      users.mail AS have_user_mail,
+      items.item_name AS have_user_item_name,
+      items.image AS have_user_item_Image,
+      items.item_price AS have_user_item_price,
+      items.description AS have_user_item_description
+    FROM
+    users,
       items
      WHERE
       users.id = ${userId} AND

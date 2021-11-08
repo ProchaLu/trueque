@@ -8,7 +8,7 @@ const Wantlist = (props) => {
     <Layout>
       <div className="max-w-7xl  mx-auto px-4 py-5 lg:py-10">
         <h1 className="mb-10 text-center text-3xl font-bold">WANTLIST</h1>
-        <h2 className="text-2xl text-left font-bold">You said YES to:</h2>
+        <h2 className="text-2xl text-left font-bold">You pressed YES:</h2>
         <div>
           {props.likedItems.map((likedItem) => {
             return (

@@ -8,17 +8,54 @@ const Notifications = (props) => {
       <div className="max-w-7xl mx-auto px-4 py-5 lg:py-10">
         <h1 className="mb-10 text-center text-3xl font-bold">NOTIFICATIONS</h1>
         <div>
-          {props.notificationsArray.map((list) => {
+          {props.wantlist.map((list) => {
             return (
-              <div key={`list-li-${list.id}`}>
-                <div>
-                  User {list.username} wants your Item {list.itemName}!
+              <div key={`list-li-${list.wantUserId}-${list.haveUserId}`}>
+                <div className="bg-blue-light">
+                  <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
+                    <div className="my-auto">
+                      <h3 className="text-2xl font-bold">
+                        {list.wantUserItemName}
+                      </h3>
+                      <div>{list.wantUserItemPrice}€</div>
+                      <div>{list.wantUserItemDescription}</div>
+                    </div>
+                    <div className="w-full">
+                      <img
+                        className="object-scale-down"
+                        src={list.wantUserItemImage}
+                        alt={list.wantUserItemName}
+                      />
+                    </div>
+                  </div>
+                  <div className="font-bold text-center">
+                    {list.wantUserName} WANTS A TRADE WITH YOUR
+                  </div>
+                  <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
+                    <div className="my-auto">
+                      <h3 className="text-2xl font-bold">
+                        {list.haveUserItemName}
+                      </h3>
+                      <div>{list.haveUserItemPrice}€</div>
+                      <div>{list.haveUserItemDescription}</div>
+                    </div>
+                    <div className="w-full">
+                      <img
+                        className="object-scale-down"
+                        src={list.haveUserItemImage}
+                        alt={list.haveUserItemName}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <Link href={`mailto:${list.mail}`} passHref>
-                  <button className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-10 px-10 rounded hover:bg-blue-light hover:text-dark">
-                    MAIL TO USER {list.username}
+                <Link href={`mailto:${list.wantUserMail}`} passHref>
+                  <button className="w-full shadow-lg bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark">
+                    MAIL TO USER {list.wantUserName}
                   </button>
                 </Link>
+                <button className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark">
+                  TRADE
+                </button>
               </div>
             );
           })}
@@ -31,8 +68,12 @@ const Notifications = (props) => {
 export default Notifications;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { getValidSessionByToken, getWantlistbyItemUserId, getAll } =
-    await import('../util/database');
+  const {
+    getValidSessionByToken,
+    getWantlistbyItemUserId,
+    getWantlistAll,
+    getHavelistAll,
+  } = await import('../util/database');
 
   const sessionToken = context.req.cookies.sessionToken;
 
@@ -52,22 +93,35 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const notificationUserList = await getWantlistbyItemUserId(session.userId);
 
-  console.log(notificationUserList);
-
-  const notificationsArray = [];
+  const wantlistArray = [];
 
   for (let i = 0; i < notificationUserList.length; i++) {
-    notificationsArray.push(
-      await getAll(
+    wantlistArray.push(
+      await getWantlistAll(
         notificationUserList[i].userId,
+        notificationUserList[i].userExchangeItemId,
+      ),
+    );
+  }
+
+  const havelistArray = [];
+
+  for (let i = 0; i < notificationUserList.length; i++) {
+    havelistArray.push(
+      await getHavelistAll(
+        notificationUserList[i].itemUserId,
         notificationUserList[i].itemId,
       ),
     );
   }
 
-  console.log(notificationsArray);
+  const wantlist = [];
+
+  for (let i = 0; i < wantlistArray.length; i++) {
+    wantlist[i] = Object.assign(wantlistArray[i], havelistArray[i]);
+  }
 
   return {
-    props: { notificationsArray, notificationUserList },
+    props: { wantlist },
   };
 }

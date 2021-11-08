@@ -14,11 +14,6 @@ const ItemExchange = (props) => {
   const onClickYes = async (event) => {
     event.preventDefault();
 
-    console.log('user', props.user);
-    console.log('exchange item', props.exchangeItem.id);
-    console.log('changed user', props.item.userId);
-    console.log('changed item', props.item.id);
-
     const registerResponse = await fetch('api/wantlist', {
       method: 'POST',
       headers: {
