@@ -105,6 +105,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const item = await getItemsRandomNotUserId(session.userId);
 
+  console.log(item);
+
   const user = session.userId;
 
   return {

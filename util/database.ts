@@ -385,18 +385,32 @@ export async function getItemsNotUserId(userId: number) {
 export async function getItemsRandomNotUserId(userId: number) {
   if (!userId) return undefined;
   const items = await sql<[Item]>`
- SELECT
-	*
-FROM
-	items
-WHERE user_id NOT IN (${userId})
-  OFFSET floor(random() * (
+    SELECT
+	    *
+    FROM
+	    items
+    WHERE user_id NOT IN (${userId})
+      OFFSET floor(random() * (
 		SELECT
 			COUNT(*)
-			FROM items))
-LIMIT 1
+		FROM
+      items))
+    LIMIT 1;
 `;
   return camelcaseKeys(items[0]);
+}
+
+export async function getItemsRandomPriceRangeNotUserId(
+  itemPrice: number,
+  priceRange: number,
+) {
+  if (!itemPrice || !priceRange) return undefined;
+  const items = await sql<[Item]>`
+  SELECT
+    *
+  FROM
+    items
+`;
 }
 
 export async function getItemByItemId(itemId: number) {
@@ -407,6 +421,7 @@ export async function getItemByItemId(itemId: number) {
   FROM
     items
   WHERE id = ${itemId};
+
   `;
   return camelcaseKeys(items);
 }

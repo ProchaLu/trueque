@@ -45,7 +45,7 @@ const Itempage = (props) => {
                 </div>
                 <Link href="/itemExchange/" passHref>
                   <button className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-10 px-10 rounded hover:bg-blue-light hover:text-dark">
-                    START SEARCHING {item.id}
+                    START SEARCHING
                   </button>
                 </Link>
               </div>

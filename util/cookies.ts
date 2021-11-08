@@ -1,4 +1,5 @@
 import { serialize } from 'cookie';
+import Cookies from 'js-cookie';
 
 export function createSerializedRegistersessionTokenCookie(token: string) {
   const isProduction = process.env.NODE_ENV === 'production';
@@ -15,4 +16,16 @@ export function createSerializedRegistersessionTokenCookie(token: string) {
     path: '/',
     sameSite: 'lax',
   });
+}
+
+export function getParsedCookie(key) {
+  try {
+    return JSON.parse(Cookies.get(key));
+  } catch (err) {
+    return undefined;
+  }
+}
+
+export function setParsedCookie(key, value) {
+  Cookies.set(key, JSON.stringify(value));
 }
