@@ -1,8 +1,38 @@
 import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import Layout from '../components/Layout';
+import { Errors } from '../util/types';
 
 const Notifications = (props) => {
+  const onClickTrade = async (event) => {
+    event.preventDefault();
+
+    const registerResponse = await fetch('api/wantlist', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: props.user,
+        userExchangeItemId: props.exchangeItem.id,
+        itemUserId: props.item.userId,
+        itemId: props.item.id,
+      }),
+    });
+    const addWantlistJson = (await registerResponse.json()) as RegisterResponse;
+    if ('errors' in addWantlistJson) {
+      setErrors(addWantlistJson.errors);
+      return;
+    }
+    const destination =
+      typeof router.query.returnTo === 'string' && router.query.returnTo
+        ? router.query.returnTo
+        : '/tradeOverview';
+
+    props.refreshUsername();
+
+    router.push(destination);
+  };
   return (
     <Layout>
       <div className="max-w-7xl mx-auto px-4 py-5 lg:py-10">
@@ -53,7 +83,10 @@ const Notifications = (props) => {
                     MAIL TO USER {list.wantUserName}
                   </button>
                 </Link>
-                <button className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark">
+                <button
+                  onClick={() => onClickTrade}
+                  className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
+                >
                   TRADE
                 </button>
               </div>

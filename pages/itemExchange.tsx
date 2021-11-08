@@ -2,7 +2,6 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
-import { getItemByItemId } from '../util/database';
 import { Errors } from '../util/types';
 import { RegisterResponse } from './api/wantlist';
 
@@ -84,9 +83,8 @@ const ItemExchange = (props) => {
 export default ItemExchange;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { getValidSessionByToken, getItemsRandomNotUserId } = await import(
-    '../util/database'
-  );
+  const { getValidSessionByToken, getItemByItemId, getItemsRandomNotUserId } =
+    await import('../util/database');
 
   const exchangeItemId = context.req.cookies.item;
 
