@@ -26,6 +26,12 @@ export type Wantlist = {
   itemId: number;
 };
 
+export type Tradelist = {
+  userId: number;
+  itemUserId: number;
+  itemId: number;
+};
+
 export type Session = {
   id: number;
   token: string;
@@ -493,6 +499,7 @@ export async function getWantlistAll(userId: number, itemId: number) {
       users.id AS want_user_id,
       users.username AS want_user_name,
       users.mail AS want_user_mail,
+      items.id AS want_user_item_Id,
       items.item_name AS want_user_item_name,
       items.image AS want_user_item_Image,
       items.item_price AS want_user_item_price,
@@ -504,9 +511,6 @@ export async function getWantlistAll(userId: number, itemId: number) {
       users.id = ${userId} AND
       items.id = ${itemId}
   `;
-  /*   return allList.map((list) => {
-    return camelcaseKeys(list);
-  }); */
   return camelcaseKeys(allList);
 }
 
@@ -518,6 +522,7 @@ export async function getHavelistAll(userId: number, itemId: number) {
       users.id AS have_user_id,
       users.username AS have_user_name,
       users.mail AS have_user_mail,
+      items.id AS have_user_item_Id,
       items.item_name AS have_user_item_name,
       items.image AS have_user_item_Image,
       items.item_price AS have_user_item_price,
@@ -529,8 +534,47 @@ export async function getHavelistAll(userId: number, itemId: number) {
       users.id = ${userId} AND
       items.id = ${itemId}
   `;
-  /*   return allList.map((list) => {
-    return camelcaseKeys(list);
-  }); */
   return camelcaseKeys(allList);
+}
+
+// TRADELIST
+
+export async function insertItemtoTradelist({
+  userId,
+  userExchangeItemId,
+  itemUserId,
+  itemId,
+}: {
+  userId: number;
+  userExchangeItemId: number;
+  itemUserId: number;
+  itemId: number;
+}) {
+  const [tradelist] = await sql<[Tradelist]>`
+      INSERT INTO tradelist
+        (user_id, user_exchange_item_id, item_user_id, item_id)
+      VALUES
+        (${userId}, ${userExchangeItemId}, ${itemUserId},  ${itemId})
+      RETURNING
+        id,
+        user_id,
+        user_exchange_item_id,
+        item_user_id,
+        item_id;
+    `;
+  return camelcaseKeys(tradelist);
+}
+
+export async function getTradelistByUserId(userId: number) {
+  if (!userId) return undefined;
+  const tradelist = await sql<[Tradelist]>`
+    SELECT
+      *
+    FROM
+    tradelist
+    WHERE item_user_id = ${userId};
+  `;
+  return tradelist.map((list) => {
+    return camelcaseKeys(list);
+  });
 }

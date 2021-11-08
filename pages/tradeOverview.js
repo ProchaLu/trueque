@@ -13,7 +13,8 @@ const tradeOverview = () => {
 export default tradeOverview;
 
 export async function getServerSideProps(context) {
-  const { getValidSessionByToken } = await import('../util/database');
+  const { getValidSessionByToken, getTradelistByUserId, getItemByItemId } =
+    await import('../util/database');
 
   const sessionToken = context.req.cookies.sessionToken;
 
@@ -30,6 +31,10 @@ export async function getServerSideProps(context) {
       },
     };
   }
+
+  const tradelistRows = await getTradelistByUserId(session.userId);
+
+  console.log(tradelistRows);
 
   return {
     props: {},

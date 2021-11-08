@@ -1,38 +1,16 @@
 import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import Layout from '../components/Layout';
 import { Errors } from '../util/types';
+import { RegisterResponse } from './api/tradelist';
 
 const Notifications = (props) => {
-  const onClickTrade = async (event) => {
-    event.preventDefault();
+  const router = useRouter();
 
-    const registerResponse = await fetch('api/wantlist', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: props.user,
-        userExchangeItemId: props.exchangeItem.id,
-        itemUserId: props.item.userId,
-        itemId: props.item.id,
-      }),
-    });
-    const addWantlistJson = (await registerResponse.json()) as RegisterResponse;
-    if ('errors' in addWantlistJson) {
-      setErrors(addWantlistJson.errors);
-      return;
-    }
-    const destination =
-      typeof router.query.returnTo === 'string' && router.query.returnTo
-        ? router.query.returnTo
-        : '/tradeOverview';
+  const [errors, setErrors] = useState<Errors>([]);
 
-    props.refreshUsername();
-
-    router.push(destination);
-  };
   return (
     <Layout>
       <div className="max-w-7xl mx-auto px-4 py-5 lg:py-10">
@@ -84,11 +62,47 @@ const Notifications = (props) => {
                   </button>
                 </Link>
                 <button
-                  onClick={() => onClickTrade}
+                  onClick={async (event) => {
+                    event.preventDefault();
+
+                    const registerResponse = await fetch('api/tradelist', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        userId: list.wantUserId,
+                        userExchangeItemId: list.wantUserItemId,
+                        itemUserId: list.haveUserId,
+                        itemId: list.haveUserItemId,
+                      }),
+                    });
+
+                    const addTradelistJson =
+                      (await registerResponse.json()) as RegisterResponse;
+                    if ('errors' in addTradelistJson) {
+                      setErrors(addTradelistJson.errors);
+                      return;
+                    }
+                    const destination =
+                      typeof router.query.returnTo === 'string' &&
+                      router.query.returnTo
+                        ? router.query.returnTo
+                        : '/tradeOverview';
+
+                    props.refreshUsername();
+
+                    router.push(destination);
+                  }}
                   className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
                 >
                   TRADE
                 </button>
+                <div className="text-red mb-2">
+                  {errors.map((error) => (
+                    <div key={`error-${error.message}`}>{error.message}</div>
+                  ))}
+                </div>
               </div>
             );
           })}

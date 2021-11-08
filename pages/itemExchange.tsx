@@ -90,8 +90,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const exchangeItem = await getItemByItemId(exchangeItemId);
 
-  console.log(exchangeItem);
-
   const sessionToken = context.req.cookies.sessionToken;
 
   const session = await getValidSessionByToken(sessionToken);
@@ -109,8 +107,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const item = await getItemsRandomNotUserId(session.userId);
-
-  console.log(item);
 
   const user = session.userId;
 

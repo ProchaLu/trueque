@@ -23,7 +23,6 @@ export default async function deleteItemHandler(
 ) {
   try {
     const itemId = req.body.id;
-    console.log(req.body);
 
     const deleteItem = await deleteItemByItemId({ itemId: itemId });
 
