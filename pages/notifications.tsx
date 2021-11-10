@@ -1,5 +1,4 @@
 import { GetServerSidePropsContext } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
@@ -15,98 +14,103 @@ const Notifications = (props) => {
     <Layout>
       <div className="max-w-7xl mx-auto px-4 py-5 lg:py-10">
         <h1 className="mb-10 text-center text-3xl font-bold">NOTIFICATIONS</h1>
-        <div>
-          {props.wantlist.map((list) => {
-            return (
-              <div key={`list-li-${list.wantUserId}-${list.haveUserId}`}>
-                <div className="bg-blue-light">
-                  <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
-                    <div className="my-auto">
-                      <h3 className="text-2xl font-bold">
-                        {list.wantUserItemName}
-                      </h3>
-                      <div>{list.wantUserItemPrice}€</div>
-                      <div>{list.wantUserItemDescription}</div>
+        {props.wantlist.length === 0 ? (
+          <div className="text-bold text-center mb-4">EMPTY</div>
+        ) : (
+          <div>
+            {props.wantlist.map((list) => {
+              return (
+                <div key={`list-li-${list.wantUserId}-${list.haveUserId}`}>
+                  <div className="bg-blue-light">
+                    <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
+                      <div className="my-auto">
+                        <h3 className="text-2xl font-bold">
+                          {list.wantUserItemName}
+                        </h3>
+                        <div>{list.wantUserItemPrice}€</div>
+                        <div>{list.wantUserItemDescription}</div>
+                      </div>
+                      <div className="w-full">
+                        <img
+                          className="object-scale-down"
+                          src={list.wantUserItemImage}
+                          alt={list.wantUserItemName}
+                        />
+                      </div>
                     </div>
-                    <div className="w-full">
-                      <img
-                        className="object-scale-down"
-                        src={list.wantUserItemImage}
-                        alt={list.wantUserItemName}
-                      />
+                    <div className="font-bold text-center">
+                      {list.wantUserName} WANTS A TRADE WITH YOUR
+                    </div>
+                    <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
+                      <div className="my-auto">
+                        <h3 className="text-2xl font-bold">
+                          {list.haveUserItemName}
+                        </h3>
+                        <div>{list.haveUserItemPrice}€</div>
+                        <div>{list.haveUserItemDescription}</div>
+                      </div>
+                      <div className="w-full">
+                        <img
+                          className="object-scale-down"
+                          src={list.haveUserItemImage}
+                          alt={list.haveUserItemName}
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="font-bold text-center">
-                    {list.wantUserName} WANTS A TRADE WITH YOUR
-                  </div>
-                  <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
-                    <div className="my-auto">
-                      <h3 className="text-2xl font-bold">
-                        {list.haveUserItemName}
-                      </h3>
-                      <div>{list.haveUserItemPrice}€</div>
-                      <div>{list.haveUserItemDescription}</div>
-                    </div>
-                    <div className="w-full">
-                      <img
-                        className="object-scale-down"
-                        src={list.haveUserItemImage}
-                        alt={list.haveUserItemName}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <Link href={`mailto:${list.wantUserMail}`} passHref>
-                  <button className="w-full shadow-lg bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark">
+                  <button
+                    onClick={() => router.push(`mailto:${list.wantUserMail}`)}
+                    className="w-full shadow-lg bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
+                  >
                     MAIL TO USER {list.wantUserName}
                   </button>
-                </Link>
-                <button
-                  onClick={async (event) => {
-                    event.preventDefault();
+                  <button
+                    onClick={async (event) => {
+                      event.preventDefault();
 
-                    const registerResponse = await fetch('api/tradelist', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({
-                        userId: list.wantUserId,
-                        userExchangeItemId: list.wantUserItemId,
-                        itemUserId: list.haveUserId,
-                        itemId: list.haveUserItemId,
-                      }),
-                    });
+                      const registerResponse = await fetch('api/tradelist', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                          userId: list.wantUserId,
+                          userExchangeItemId: list.wantUserItemId,
+                          itemUserId: list.haveUserId,
+                          itemId: list.haveUserItemId,
+                        }),
+                      });
 
-                    const addTradelistJson =
-                      (await registerResponse.json()) as RegisterResponse;
-                    if ('errors' in addTradelistJson) {
-                      setErrors(addTradelistJson.errors);
-                      return;
-                    }
-                    const destination =
-                      typeof router.query.returnTo === 'string' &&
-                      router.query.returnTo
-                        ? router.query.returnTo
-                        : '/tradeOverview';
+                      const addTradelistJson =
+                        (await registerResponse.json()) as RegisterResponse;
+                      if ('errors' in addTradelistJson) {
+                        setErrors(addTradelistJson.errors);
+                        return;
+                      }
+                      const destination =
+                        typeof router.query.returnTo === 'string' &&
+                        router.query.returnTo
+                          ? router.query.returnTo
+                          : '/tradeOverview';
 
-                    props.refreshUsername();
+                      props.refreshUsername();
 
-                    router.push(destination);
-                  }}
-                  className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
-                >
-                  TRADE
-                </button>
-                <div className="text-red mb-2">
-                  {errors.map((error) => (
-                    <div key={`error-${error.message}`}>{error.message}</div>
-                  ))}
+                      router.push(destination);
+                    }}
+                    className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
+                  >
+                    TRADE
+                  </button>
+                  <div className="text-red mb-2">
+                    {errors.map((error) => (
+                      <div key={`error-${error.message}`}>{error.message}</div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </Layout>
   );

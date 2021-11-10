@@ -8,33 +8,39 @@ const Wantlist = (props) => {
     <Layout>
       <div className="max-w-7xl  mx-auto px-4 py-5 lg:py-10">
         <h1 className="mb-10 text-center text-3xl font-bold">WANTLIST</h1>
-        <h2 className="text-2xl text-left font-bold">You pressed YES:</h2>
-        <div>
-          {props.likedItems.map((likedItem) => {
-            return (
-              <div key={`item-li-${likedItem.id}`}>
-                <div className="bg-blue-light">
-                  <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
-                    <div className="my-auto">
-                      <h3 className="text-2xl font-bold">
-                        {likedItem.itemName}
-                      </h3>
-                      <div>{likedItem.itemPrice}€</div>
-                      <div>{likedItem.description}</div>
-                    </div>
-                    <div className="w-full">
-                      <img
-                        className="object-scale-down"
-                        src={likedItem.image}
-                        alt={likedItem.itemName}
-                      />
+        {props.likedItems.length === 0 ? (
+          <div className="text-bold text-center mb-4">EMPTY</div>
+        ) : (
+          <div>
+            <h2 className="text-2xl text-left font-bold">You pressed YES</h2>
+            <div>
+              {props.likedItems.map((likedItem) => {
+                return (
+                  <div key={`item-li-${likedItem.id}`}>
+                    <div className="bg-blue-light">
+                      <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
+                        <div className="my-auto">
+                          <h3 className="text-2xl font-bold">
+                            {likedItem.itemName}
+                          </h3>
+                          <div>{likedItem.itemPrice}€</div>
+                          <div>{likedItem.description}</div>
+                        </div>
+                        <div className="w-full">
+                          <img
+                            className="object-scale-down"
+                            src={likedItem.image}
+                            alt={likedItem.itemName}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );

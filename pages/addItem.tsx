@@ -1,5 +1,4 @@
 import { GetServerSidePropsContext } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { List, ListItem, Range } from 'tailwind-mobile/react';
@@ -191,11 +190,12 @@ const AddItem = (props: Props) => {
               ''
             )}
           </div>
-          <Link href="/itempage/" passHref>
-            <button className="w-full shadow-lg mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
-              BACK
-            </button>
-          </Link>
+          <button
+            onClick={() => router.push('/itempage/')}
+            className="w-full shadow-lg mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
+          >
+            BACK
+          </button>
         </form>
       </div>
     </Layout>

@@ -499,6 +499,7 @@ export async function getWantlistAll(userId: number, itemId: number) {
       users.id AS want_user_id,
       users.username AS want_user_name,
       users.mail AS want_user_mail,
+      users.address AS want_user_address,
       items.id AS want_user_item_Id,
       items.item_name AS want_user_item_name,
       items.image AS want_user_item_Image,
@@ -522,6 +523,7 @@ export async function getHavelistAll(userId: number, itemId: number) {
       users.id AS have_user_id,
       users.username AS have_user_name,
       users.mail AS have_user_mail,
+      users.address AS have_user_address,
       items.id AS have_user_item_Id,
       items.item_name AS have_user_item_name,
       items.image AS have_user_item_Image,
@@ -565,7 +567,7 @@ export async function insertItemtoTradelist({
   return camelcaseKeys(tradelist);
 }
 
-export async function getTradelistByUserId(userId: number) {
+export async function getTradelistByItemUserId(userId: number) {
   if (!userId) return undefined;
   const tradelist = await sql<[Tradelist]>`
     SELECT
@@ -577,4 +579,82 @@ export async function getTradelistByUserId(userId: number) {
   return tradelist.map((list) => {
     return camelcaseKeys(list);
   });
+}
+
+export async function getTradelistByUserId(userId: number) {
+  if (!userId) return undefined;
+  const tradelist = await sql<[Tradelist]>`
+    SELECT
+      *
+    FROM
+    tradelist
+    WHERE user_id = ${userId};
+  `;
+  return tradelist.map((list) => {
+    return camelcaseKeys(list);
+  });
+}
+
+export async function getTradelistByAllUserId(userId: number) {
+  if (!userId) return undefined;
+  const tradelist = await sql<[Tradelist]>`
+    SELECT
+      *
+    FROM
+    tradelist
+    WHERE user_id = ${userId}
+    OR
+    item_user_id = ${userId}
+  `;
+  return tradelist.map((list) => {
+    return camelcaseKeys(list);
+  });
+}
+
+export async function getTradelistForUserWant(userId: number, itemId: number) {
+  if (!userId) return undefined;
+  if (!itemId) return undefined;
+  const [allList] = await sql<All[]>`
+  SELECT
+    users.id AS want_user_id,
+    users.username AS want_user_name,
+    users.mail AS want_user_mail,
+    users.address AS want_user_address,
+    items.id AS want_user_item_Id,
+    items.item_name AS want_user_item_name,
+    items.image AS want_user_item_Image,
+    items.item_price AS want_user_item_price,
+    items.description AS want_user_item_description
+  FROM
+  users,
+    items
+   WHERE
+    users.id = ${userId} AND
+    items.id = ${itemId}
+`;
+  return camelcaseKeys(allList);
+}
+
+export async function getTradelistForUserHave(userId: number, itemId: number) {
+  if (!userId) return undefined;
+  if (!itemId) return undefined;
+  const [allList] = await sql<All[]>`
+  SELECT
+    users.id AS have_user_id,
+    users.username AS have_user_name,
+    users.mail AS have_user_mail,
+    users.address AS have_user_address,
+    items.id AS have_user_item_Id,
+    items.item_name AS have_user_item_name,
+    items.image AS have_user_item_Image,
+    items.item_price AS have_user_item_price,
+    items.description AS have_user_item_description
+  FROM
+  users,
+    items
+   WHERE
+    users.id = ${userId} AND
+    items.id = ${itemId}
+`;
+  return camelcaseKeys(allList);
 }

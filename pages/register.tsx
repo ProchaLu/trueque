@@ -130,11 +130,12 @@ const RegisterPage = (props: Props) => {
             REGISTER
           </button>
         </form>
-        <Link href="/" passHref>
-          <button className=" w-full mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
-            BACK
-          </button>
-        </Link>
+        <button
+          onClick={() => router.push('/')}
+          className=" w-full mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
+        >
+          BACK
+        </button>
       </div>
     </LayoutBeforeLogin>
   );

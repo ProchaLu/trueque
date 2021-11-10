@@ -1,13 +1,14 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
+import router from 'next/router';
 import { Fragment } from 'react';
 
 const navigation = [
   { name: 'Item Page', href: '/itempage', current: false },
   { name: 'Add Item', href: '/addItem', current: false },
-  { name: 'Trade Overview', href: '/tradeOverview', current: false },
   { name: 'Wantlist', href: '/wantlist', current: false },
+  { name: 'Trade Overview', href: '/tradeOverview', current: false },
 ];
 
 function classNames(...classes) {
@@ -66,15 +67,14 @@ const Navbar = (props) => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <Link href="/notifications" passHref>
-                  <button
-                    type="button"
-                    className="bg-blue-dark p-1 rounded-full text-bright hover:text-bright focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-bright focus:ring-bright"
-                  >
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                </Link>
+                <button
+                  onClick={() => router.push('/notifications/')}
+                  type="button"
+                  className="bg-blue-dark p-1 rounded-full text-bright hover:text-bright focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-bright focus:ring-bright"
+                >
+                  <span className="sr-only">View notifications</span>
+                  <BellIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
                   <div>

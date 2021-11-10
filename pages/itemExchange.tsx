@@ -10,9 +10,7 @@ const ItemExchange = (props) => {
 
   const [errors, setErrors] = useState<Errors>([]);
 
-  const onClickYes = async (event) => {
-    event.preventDefault();
-
+  const onClickYes = async () => {
     const registerResponse = await fetch('api/wantlist', {
       method: 'POST',
       headers: {
@@ -30,14 +28,12 @@ const ItemExchange = (props) => {
       setErrors(addWantlistJson.errors);
       return;
     }
-    const destination =
-      typeof router.query.returnTo === 'string' && router.query.returnTo
-        ? router.query.returnTo
-        : '/itemExchange';
-
     props.refreshUsername();
+  };
 
-    router.push(destination);
+  const onClickYesWithRouting = () => {
+    onClickYes();
+    router.reload();
   };
 
   return (
@@ -61,7 +57,7 @@ const ItemExchange = (props) => {
             NO
           </button>
           <button
-            onClick={onClickYes}
+            onClick={onClickYesWithRouting}
             className="rounded-full h-40 w-40 border-2 border-dark  flex items-center justify-center bg-green text-bright text-3xl"
           >
             YES
