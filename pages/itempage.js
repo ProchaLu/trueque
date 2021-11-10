@@ -5,13 +5,6 @@ import { setParsedCookie } from '../util/cookies';
 const Itempage = (props) => {
   const router = useRouter();
 
-  const addItemToCookie = (props) => {
-    let newItems;
-    newItems = [{ id: props.item.id }];
-    setParsedCookie('item', newItems);
-    router.push('/itemExchange/');
-  };
-
   return (
     <Layout>
       <div className="max-w-7xl  mx-auto px-2 py-2 lg:py-10">
@@ -53,7 +46,20 @@ const Itempage = (props) => {
                         EDIT
                       </button>
                       <button
-                        onClick={async () => await console.log('DELETE')}
+                        onClick={async (event) => {
+                          event.preventDefault();
+
+                          const response = await fetch(
+                            `http://localhost:3000/api/items/${item.id}`,
+                            {
+                              method: 'DELETE',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                            },
+                          );
+                          router.push(`/itempage/`);
+                        }}
                         className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
                       >
                         DELETE

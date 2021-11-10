@@ -15,7 +15,7 @@ const tradeOverview = (props) => {
             {props.tradelistHave.map((tradelist) => {
               return (
                 <div
-                  key={`list-li-${tradelist.haveUserId}-${tradelist.wantUserId}`}
+                  key={`list-li-${tradelist.haveUserId}-${tradelist.wantUserId}-${tradelist.wantUserItemId}`}
                 >
                   <div className="bg-blue-light">
                     <div className="text-center font-bold pt-2 ">
@@ -39,7 +39,7 @@ const tradeOverview = (props) => {
                       </div>
                     </div>
                     <div className="font-bold text-center">
-                      YOU CONFIRMED THE TRADE
+                      YOU CONFIRMED THE TRADE WITH {tradelist.wantUserName}
                     </div>
                     <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
                       <div className="my-auto">
@@ -155,11 +155,7 @@ export async function getServerSideProps(context) {
 
   const tradelistByUserWant = await getTradelistByUserId(session.userId);
 
-  console.log('tradelist by want', tradelistByUserWant);
-
   const tradelistByUserHave = await getTradelistByItemUserId(session.userId);
-
-  console.log('tradelist by have', tradelistByUserHave);
 
   // TRADELIST BY WANT ITEM
 
@@ -207,8 +203,6 @@ export async function getServerSideProps(context) {
     );
   }
 
-  console.log('tradelisthavewant', tradelistHaveArrayByWanttItem);
-
   const tradelistHaveArrayByHaveItem = [];
 
   for (let i = 0; i < tradelistByUserHave.length; i++) {
@@ -228,8 +222,6 @@ export async function getServerSideProps(context) {
       tradelistHaveArrayByHaveItem[i],
     );
   }
-
-  console.log(tradelistHave);
 
   return {
     props: { tradelistWant, tradelistHave },

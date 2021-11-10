@@ -43,45 +43,41 @@ const AddItem = (props: Props) => {
     setLoading(false);
   };
 
+  const AddItemWithImage = async () => {
+    const registerResponse = await fetch('/api/itemRegister', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        itemName: itemName,
+        userId: userId,
+        itemPrice: itemPrice,
+        description: description,
+        priceRange: priceRange,
+        image: image,
+      }),
+    });
+
+    const addItemJson = (await registerResponse.json()) as RegisterResponse;
+
+    if ('errors' in addItemJson) {
+      setErrors(addItemJson.errors);
+      return;
+    }
+    props.refreshUsername();
+  };
+
+  const onClickAddItem = () => {
+    AddItemWithImage();
+    router.push('/itempage/');
+  };
+
   return (
     <Layout>
       <div className="max-w-7xl my-2 mx-auto px-4 py-5 text-xl lg:py-10 ">
         <h1 className="mb-10 text-center text-3xl font-bold">ADD ITEM</h1>
-        <form
-          onSubmit={async (event) => {
-            event.preventDefault();
-            const registerResponse = await fetch('/api/itemRegister', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                itemName: itemName,
-                userId: userId,
-                itemPrice: itemPrice,
-                description: description,
-                priceRange: priceRange,
-                image: image,
-              }),
-            });
-
-            const addItemJson =
-              (await registerResponse.json()) as RegisterResponse;
-
-            if ('errors' in addItemJson) {
-              setErrors(addItemJson.errors);
-              return;
-            }
-            const destination =
-              typeof router.query.returnTo === 'string' && router.query.returnTo
-                ? router.query.returnTo
-                : '/itempage';
-
-            props.refreshUsername();
-
-            router.push(destination);
-          }}
-        >
+        <form>
           <div className="mb-10">
             <label
               htmlFor="itemName"
@@ -183,7 +179,10 @@ const AddItem = (props: Props) => {
           </div>
           <div>
             {itemName && itemPrice > 0 ? (
-              <button className="w-full bg-blue shadow-lg text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
+              <button
+                onClick={onClickAddItem}
+                className="w-full bg-blue shadow-lg text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
+              >
                 ADD ITEM
               </button>
             ) : (

@@ -20,7 +20,9 @@ const Notifications = (props) => {
           <div>
             {props.wantlist.map((list) => {
               return (
-                <div key={`list-li-${list.wantUserId}-${list.haveUserId}`}>
+                <div
+                  key={`list-li-${list.wantUserId}-${list.haveUserId}-${list.wantUserItemId}`}
+                >
                   <div className="bg-blue-light">
                     <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
                       <div className="my-auto">
