@@ -2,6 +2,17 @@ import camelcaseKeys from 'camelcase-keys';
 import dotenvSafe from 'dotenv-safe';
 import postgres from 'postgres';
 
+export type All = {
+  id: number;
+  username: string;
+  mail: string;
+  address: string;
+  item_name: string;
+  image: string;
+  item_price: number;
+  description: string;
+};
+
 export type User = {
   id: number;
   username: string;
@@ -395,28 +406,33 @@ export async function getItemsRandomNotUserId(userId: number) {
 	    *
     FROM
 	    items
-    WHERE user_id NOT IN (${userId})
-      OFFSET floor(random() * (
-		SELECT
-			COUNT(*)
-		FROM
-      items))
+    WHERE
+      user_id NOT IN (${userId})
+    ORDER BY
+      RANDOM()
     LIMIT 1;
 `;
   return camelcaseKeys(items[0]);
 }
 
 export async function getItemsRandomPriceRangeNotUserId(
-  itemPrice: number,
-  priceRange: number,
+  userId: number,
+  priceMin: number,
+  priceMax: number,
 ) {
-  if (!itemPrice || !priceRange) return undefined;
+  if (!priceMin || !priceMax || !userId) return undefined;
   const items = await sql<[Item]>`
   SELECT
     *
   FROM
     items
+  WHERE
+    user_id NOT IN (${userId}) AND item_price > ${priceMin} AND item_price < ${priceMax}
+  ORDER BY
+      RANDOM()
+    LIMIT 1;
 `;
+  return camelcaseKeys(items[0]);
 }
 
 export async function getItemByItemId(itemId: number) {

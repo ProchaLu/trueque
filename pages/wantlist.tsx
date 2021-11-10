@@ -16,7 +16,7 @@ const Wantlist = (props) => {
             <div>
               {props.likedItems.map((likedItem) => {
                 return (
-                  <div key={`item-li-${likedItem.id}`}>
+                  <div key={`item-li-${likedItem.id}-${likedItem.userId}`}>
                     <div className="bg-blue-light">
                       <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
                         <div className="my-auto">

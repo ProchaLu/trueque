@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext } from 'next';
 import Layout from '../components/Layout';
 
 const tradeOverview = (props) => {
@@ -15,7 +16,7 @@ const tradeOverview = (props) => {
             {props.tradelistHave.map((tradelist) => {
               return (
                 <div
-                  key={`list-li-${tradelist.haveUserId}-${tradelist.wantUserId}-${tradelist.wantUserItemId}`}
+                  key={`list-li-${tradelist.haveUserItemId}-${tradelist.wantUserId}-${tradelist.wantUserItemId}`}
                 >
                   <div className="bg-blue-light">
                     <div className="text-center font-bold pt-2 ">
@@ -128,7 +129,7 @@ const tradeOverview = (props) => {
 
 export default tradeOverview;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const {
     getValidSessionByToken,
     getTradelistByItemUserId,

@@ -60,12 +60,17 @@ const Notifications = (props) => {
                       </div>
                     </div>
                   </div>
-                  <button
-                    onClick={() => router.push(`mailto:${list.wantUserMail}`)}
-                    className="w-full shadow-lg bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
-                  >
-                    MAIL TO USER {list.wantUserName}
-                  </button>
+                  <div className="grid grid-cols-2 gap-4">
+                    <button
+                      onClick={() => router.push(`mailto:${list.wantUserMail}`)}
+                      className="w-full shadow-lg bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
+                    >
+                      MAIL
+                    </button>
+                    <button className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark">
+                      DELETE
+                    </button>
+                  </div>
                   <button
                     onClick={async (event) => {
                       event.preventDefault();
