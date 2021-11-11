@@ -354,6 +354,40 @@ export async function insertItem({
   return camelcaseKeys(item);
 }
 
+export async function updateItemByItemId(
+  id: number,
+  {
+    itemName,
+    itemPrice,
+    priceRange,
+    description,
+  }: {
+    itemName: string;
+    itemPrice: number;
+    priceRange: number;
+    description: string;
+  },
+) {
+  const users = await sql`
+    UPDATE
+      items
+    SET
+      item_name = ${itemName},
+      item_price= ${itemPrice},
+      price_range= ${priceRange},
+      description= ${description}
+    WHERE
+      id = ${id}
+    RETURNING
+      id,
+      item_name,
+      item_price,
+      price_range,
+      description;
+  `;
+  return camelcaseKeys(users[0]);
+}
+
 export async function getItemsFromUserId(userId: number) {
   if (!userId) return undefined;
 

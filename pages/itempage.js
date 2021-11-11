@@ -40,7 +40,11 @@ const Itempage = (props) => {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <button
-                        onClick={async () => await console.log('EDIT')}
+                        onClick={() => {
+                          const newItems = item.id;
+                          setParsedCookie('item', newItems);
+                          router.push('/editItem/');
+                        }}
                         className="w-auto shadow-lg bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
                       >
                         EDIT
@@ -49,7 +53,7 @@ const Itempage = (props) => {
                         onClick={async (event) => {
                           event.preventDefault();
 
-                          const response = await fetch(
+                          await fetch(
                             `http://localhost:3000/api/items/${item.id}`,
                             {
                               method: 'DELETE',
