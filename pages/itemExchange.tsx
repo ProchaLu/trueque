@@ -114,13 +114,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
-  const priceMin =
+  const priceMin = Math.floor(
     exchangeItem.itemPrice -
-    (exchangeItem.itemPrice * exchangeItem.priceRange) / 100;
+      (exchangeItem.itemPrice * exchangeItem.priceRange) / 100,
+  );
 
-  const priceMax =
+  const priceMax = Math.ceil(
     exchangeItem.itemPrice +
-    (exchangeItem.itemPrice * exchangeItem.priceRange) / 100;
+      (exchangeItem.itemPrice * exchangeItem.priceRange) / 100,
+  );
 
   /* const item = await getItemsRandomNotUserId(session.userId); */
 

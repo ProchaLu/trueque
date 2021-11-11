@@ -129,7 +129,7 @@ const AddItem = (props: Props) => {
               type="number"
               placeholder="Price"
               required
-              onChange={(e) => setItemPrice(e.currentTarget.value)}
+              onChange={(e) => setItemPrice(Number(e.currentTarget.value))}
             />
           </div>
           <div className="mb-10">
