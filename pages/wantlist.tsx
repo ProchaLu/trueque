@@ -1,9 +1,10 @@
 import { GetServerSidePropsContext } from 'next';
+import { useRouter } from 'next/router';
 import React from 'react';
 import Layout from '../components/Layout';
-import { getItemByItemId } from '../util/database';
 
 const Wantlist = (props) => {
+  const router = useRouter();
   return (
     <Layout>
       <div className="max-w-7xl  mx-auto px-4 py-5 lg:py-10">
@@ -16,7 +17,9 @@ const Wantlist = (props) => {
             <div>
               {props.likedItems.map((likedItem) => {
                 return (
-                  <div key={`item-li-${likedItem.id}-${likedItem.userId}`}>
+                  <div
+                    key={`item-li-${likedItem.id}-${likedItem.userId}-${likedItem.itemId}`}
+                  >
                     <div className="bg-blue-light">
                       <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">
                         <div className="my-auto">
@@ -35,6 +38,22 @@ const Wantlist = (props) => {
                         </div>
                       </div>
                     </div>
+                    <button
+                      onClick={async (event) => {
+                        event.preventDefault();
+                        await fetch(
+                          `http://localhost:3000/api/wantlist/${likedItem.id}`,
+                          {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                          },
+                        );
+                        router.reload();
+                      }}
+                      className="w-full shadow-lg mb-5 bg-red text-bright text-xl font-bold py-2 px-10 rounded hover:bg-red-light hover:text-dark"
+                    >
+                      DELETE
+                    </button>
                   </div>
                 );
               })}
@@ -49,9 +68,8 @@ const Wantlist = (props) => {
 export default Wantlist;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { getValidSessionByToken, getWantlistByUserId } = await import(
-    '../util/database'
-  );
+  const { getValidSessionByToken, getWantlistByUserId, getItemsByWantlistId } =
+    await import('../util/database');
 
   const sessionToken = context.req.cookies.sessionToken;
 
@@ -74,7 +92,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const itemsArray = [];
 
   for (let i = 0; i < wantlistRows.length; i++) {
-    itemsArray.push(await getItemByItemId(wantlistRows[i].itemId));
+    itemsArray.push(
+      await getItemsByWantlistId(wantlistRows[0].id, wantlistRows[i].itemId),
+    );
   }
 
   const likedItems = itemsArray;

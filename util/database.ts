@@ -477,7 +477,6 @@ export async function getItemByItemId(itemId: number) {
   FROM
     items
   WHERE id = ${itemId};
-
   `;
   return camelcaseKeys(items);
 }
@@ -539,6 +538,23 @@ export async function getWantlistbyItemUserId(itemUserId: number) {
   });
 }
 
+export async function deleteWantlistItemByWantlistId(id: number) {
+  if (!id) return undefined;
+  const wantlist = await sql<Wantlist[]>`
+    DELETE FROM
+      wantlist
+    WHERE
+      id=${id}
+    RETURNING
+      id,
+      user_id,
+      user_exchange_item_id,
+			item_user_id,
+			item_id
+  `;
+  return camelcaseKeys(wantlist);
+}
+
 // JOINT TABLE
 
 export async function getWantlistAll(userId: number, itemId: number) {
@@ -587,6 +603,28 @@ export async function getHavelistAll(userId: number, itemId: number) {
       items.id = ${itemId}
   `;
   return camelcaseKeys(allList);
+}
+
+export async function getItemsByWantlistId(id: number, itemsId: number) {
+  if (!id) return undefined;
+  if (!itemsId) return undefined;
+  const [list] = await sql<All[]>`
+  SELECT
+    wantlist.id AS id,
+    items.id AS item_id,
+    items.user_id AS user_id,
+    items.item_name AS item_name,
+    items.image AS image,
+    items.item_price AS item_price,
+    items.price_range AS price_range,
+    items.description AS description
+  FROM
+   items,
+   wantlist
+  WHERE
+    wantlist.id = ${id} AND items.id = ${itemsId}
+  `;
+  return camelcaseKeys(list);
 }
 
 // TRADELIST

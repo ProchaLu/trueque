@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
 import { Errors } from '../util/types';
-import { RegisterResponse } from './api/wantlist';
+import { RegisterResponse } from './api/wantlist/addWantlist';
 
 const ItemExchange = (props) => {
   const router = useRouter();
@@ -11,7 +11,7 @@ const ItemExchange = (props) => {
   const [errors, setErrors] = useState<Errors>([]);
 
   const onClickYes = async () => {
-    const registerResponse = await fetch('api/wantlist', {
+    const registerResponse = await fetch('api/wantlist/addWantlist', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -19,8 +19,8 @@ const ItemExchange = (props) => {
       body: JSON.stringify({
         userId: props.user,
         userExchangeItemId: props.exchangeItem.id,
-        itemUserId: props.item.userId,
-        itemId: props.item.id,
+        itemUserId: props.itemPriceRange.userId,
+        itemId: props.itemPriceRange.id,
       }),
     });
     const addWantlistJson = (await registerResponse.json()) as RegisterResponse;
