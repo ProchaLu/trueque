@@ -72,7 +72,17 @@ const Notifications = (props) => {
                       MAIL
                     </button>
                     <button
-                      onClick={() => console.log('click')}
+                      onClick={async (event) => {
+                        event.preventDefault();
+                        await fetch(
+                          `http://localhost:3000/api/wantlist/${list.id}`,
+                          {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                          },
+                        );
+                        router.reload();
+                      }}
                       className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
                     >
                       DELETE
@@ -81,6 +91,15 @@ const Notifications = (props) => {
                   <button
                     onClick={async (event) => {
                       event.preventDefault();
+                      await fetch(
+                        `http://localhost:3000/api/wantlist/${list.id}`,
+                        {
+                          method: 'DELETE',
+                          headers: { 'Content-Type': 'application/json' },
+                        },
+                      );
+
+                      router.reload();
 
                       const registerResponse = await fetch('api/tradelist', {
                         method: 'POST',
@@ -94,22 +113,12 @@ const Notifications = (props) => {
                           itemId: list.haveUserItemId,
                         }),
                       });
-
                       const addTradelistJson =
                         (await registerResponse.json()) as RegisterResponse;
                       if ('errors' in addTradelistJson) {
                         setErrors(addTradelistJson.errors);
                         return;
                       }
-                      const destination =
-                        typeof router.query.returnTo === 'string' &&
-                        router.query.returnTo
-                          ? router.query.returnTo
-                          : '/tradeOverview';
-
-                      props.refreshUsername();
-
-                      router.push(destination);
                     }}
                     className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
                   >
@@ -163,6 +172,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   for (let i = 0; i < notificationUserList.length; i++) {
     wantlistArray.push(
       await getWantlistAll(
+        notificationUserList[i].id,
         notificationUserList[i].userId,
         notificationUserList[i].userExchangeItemId,
       ),

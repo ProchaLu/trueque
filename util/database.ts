@@ -557,11 +557,16 @@ export async function deleteWantlistItemByWantlistId(id: number) {
 
 // JOINT TABLE
 
-export async function getWantlistAll(userId: number, itemId: number) {
+export async function getWantlistAll(
+  wantlistId: number,
+  userId: number,
+  itemId: number,
+) {
   if (!userId) return undefined;
   if (!itemId) return undefined;
   const [allList] = await sql<All[]>`
     SELECT
+      wantlist.id AS id,
       users.id AS want_user_id,
       users.username AS want_user_name,
       users.mail AS want_user_mail,
@@ -572,9 +577,11 @@ export async function getWantlistAll(userId: number, itemId: number) {
       items.item_price AS want_user_item_price,
       items.description AS want_user_item_description
     FROM
+    wantlist,
     users,
-      items
+    items
      WHERE
+     wantlist.id = ${wantlistId} AND
       users.id = ${userId} AND
       items.id = ${itemId}
   `;
