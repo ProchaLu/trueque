@@ -16,6 +16,12 @@ const SingleUser = (props: Props) => {
         <h1 className="font-bold text-3xl m-10">Welcome {props.user.name}!</h1>
         <h2 className="font-bold text-2xl m-10">Let us start trading</h2>
         <button
+          onClick={() => router.push('/itempage/')}
+          className="w-full bg-blue-dark text-bright text-xl font-bold py-2 px-10  mb-5 rounded hover:bg-blue-light hover:text-dark"
+        >
+          ITEM PAGE
+        </button>
+        <button
           onClick={() => router.push('/addItem/')}
           className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
         >
