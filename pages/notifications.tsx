@@ -98,9 +98,6 @@ const Notifications = (props) => {
                           headers: { 'Content-Type': 'application/json' },
                         },
                       );
-
-                      router.reload();
-
                       const registerResponse = await fetch('api/tradelist', {
                         method: 'POST',
                         headers: {
@@ -119,6 +116,7 @@ const Notifications = (props) => {
                         setErrors(addTradelistJson.errors);
                         return;
                       }
+                      router.reload();
                     }}
                     className="w-full shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
                   >

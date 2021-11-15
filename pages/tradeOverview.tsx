@@ -73,10 +73,10 @@ const tradeOverview = (props) => {
                       DETAILS
                     </button>
                     <button
-                      onClick={() => console.log('CHAT')}
-                      className="w-auto shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue hover:text-dark"
+                      onClick={() => console.log('DELETE')}
+                      className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
                     >
-                      CHAT
+                      DELETE
                     </button>
                   </div>
                 </div>
@@ -149,10 +149,10 @@ const tradeOverview = (props) => {
                       DETAILS
                     </button>
                     <button
-                      onClick={() => console.log('CHAT')}
-                      className="w-auto shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
+                      onClick={() => console.log('DELETE')}
+                      className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
                     >
-                      CHAT
+                      DELETE
                     </button>
                   </div>
                 </div>

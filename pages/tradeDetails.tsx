@@ -1,7 +1,9 @@
 import { GetServerSidePropsContext } from 'next';
+import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 
 const TradeDetails = (props) => {
+  const router = useRouter();
   return (
     <Layout>
       <div className="max-w-7xl text-center  mx-auto p-4 md:p-10">
@@ -31,7 +33,13 @@ const TradeDetails = (props) => {
             width="auto"
             height="auto"
             loading="lazy"
-          ></iframe>
+          />
+          <button
+            onClick={() => router.push(`mailto:${props.user.mail}`)}
+            className="w-full shadow-lg bg-blue-dark mt-5 text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
+          >
+            MAIL
+          </button>
         </div>
       </div>
     </Layout>
