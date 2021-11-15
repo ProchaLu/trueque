@@ -93,7 +93,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   for (let i = 0; i < wantlistRows.length; i++) {
     itemsArray.push(
-      await getItemsByWantlistId(wantlistRows[0].id, wantlistRows[i].itemId),
+      await getItemsByWantlistId(wantlistRows[i].id, wantlistRows[i].itemId),
     );
   }
 

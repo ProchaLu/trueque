@@ -22,6 +22,7 @@ module.exports = {
       },
       green: {
         DEFAULT: '#2ECC40',
+        light: '#BBFFB9',
       },
       extend: {},
     },

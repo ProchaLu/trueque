@@ -62,12 +62,19 @@ const Notifications = (props) => {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <button
-                      onClick={() => router.push(`mailto:${list.wantUserMail}`)}
+                      onClick={() =>
+                        router.push(
+                          `mailto:${list.wantUserMail}?subject=Trueque%20Item%20Change%20${list.wantUserItemName}%20with%20${list.haveUserItemName}`,
+                        )
+                      }
                       className="w-full shadow-lg bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
                     >
                       MAIL
                     </button>
-                    <button className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark">
+                    <button
+                      onClick={() => console.log('click')}
+                      className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
+                    >
                       DELETE
                     </button>
                   </div>

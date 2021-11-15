@@ -31,9 +31,6 @@ const EditItem = (props) => {
         priceRange: priceRange,
       }),
     });
-
-    props.refreshUsername();
-    router.push(`/itempage/`);
   };
 
   return (

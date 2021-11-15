@@ -1,5 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
+import router from 'next/router';
 import Layout from '../components/Layout';
+import { setParsedCookie } from '../util/cookies';
 
 const tradeOverview = (props) => {
   return (
@@ -59,6 +61,24 @@ const tradeOverview = (props) => {
                       </div>
                     </div>
                   </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <button
+                      onClick={() => {
+                        const newItems = tradelist.wantUserItemId;
+                        setParsedCookie('item', newItems);
+                        router.push('/tradeDetails/');
+                      }}
+                      className="w-auto shadow-lg bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
+                    >
+                      DETAILS
+                    </button>
+                    <button
+                      onClick={() => console.log('CHAT')}
+                      className="w-auto shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue hover:text-dark"
+                    >
+                      CHAT
+                    </button>
+                  </div>
                 </div>
               );
             })}
@@ -116,6 +136,24 @@ const tradeOverview = (props) => {
                         />
                       </div>
                     </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <button
+                      onClick={() => {
+                        const newItems = tradelist.haveUserItemId;
+                        setParsedCookie('item', newItems);
+                        router.push('/tradeDetails/');
+                      }}
+                      className="w-auto shadow-lg bg-blue text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
+                    >
+                      DETAILS
+                    </button>
+                    <button
+                      onClick={() => console.log('CHAT')}
+                      className="w-auto shadow-lg bg-blue-dark text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
+                    >
+                      CHAT
+                    </button>
                   </div>
                 </div>
               );
