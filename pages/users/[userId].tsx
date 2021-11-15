@@ -17,15 +17,28 @@ const SingleUser = (props: Props) => {
         <h2 className="font-bold text-2xl m-10">Let us start trading</h2>
         <button
           onClick={() => router.push('/itempage/')}
-          className="w-full bg-blue-dark text-bright text-xl font-bold py-2 px-10  mb-5 rounded hover:bg-blue-light hover:text-dark"
+          className="w-full bg-blue text-bright text-xl font-bold py-2 px-10  mb-5 rounded hover:bg-blue-light hover:text-dark"
         >
           ITEM PAGE
         </button>
         <button
           onClick={() => router.push('/addItem/')}
-          className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
+          className="w-full bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
         >
           ADD ITEM
+        </button>
+        <h2 className="font-bold text-2xl m-10">{props.user.name}'s profile</h2>
+        <button
+          onClick={() => console.log('EDIT')}
+          className="w-full bg-blue text-bright text-xl font-bold py-2 px-10  mb-5 rounded hover:bg-blue-light hover:text-dark"
+        >
+          EDIT USER
+        </button>
+        <button
+          onClick={() => console.log('DELETE')}
+          className="w-full bg-red text-bright text-xl font-bold py-2 px-10 rounded hover:bg-red-light hover:text-dark"
+        >
+          DELETE USER
         </button>
       </div>
     </Layout>
