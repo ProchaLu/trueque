@@ -77,8 +77,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   if (sessionUser.id !== Number(context.query.userId)) {
     return {
-      props: {
-        errors: [{ message: 'Not allowed' }],
+      redirect: {
+        permanent: false,
+        destination: `/users/`,
       },
     };
   }
