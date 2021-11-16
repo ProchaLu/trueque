@@ -2,9 +2,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 import LayoutBeforeLogin from '../components/LayoutBeforeLogin';
-import ExampleImage1 from '../public/images/FRONTPAGE.jpg';
+import ExampleImage2 from '../public/images/ExchangeSite.png';
 import Logo from '../public/images/logo_large.png';
-import ExampleImage2 from '../public/images/TRADINGPAGE.png';
+import ExampleImage1 from '../public/images/TradingSite.png';
 
 const Index = () => {
   const router = useRouter();
@@ -32,10 +32,10 @@ const Index = () => {
           <li>Add / Edit and Delete your items easy</li>
         </ul>
         <div className="m-4 block sm:flex items-center justify-center">
-          <div className="p-4 mx-auto flex justify-center">
+          <div className="border-2 mb-2 mx-auto flex justify-center">
             <Image src={ExampleImage1} alt="example of the front page" />
           </div>
-          <div className="p-4 mx-auto flex justify-center">
+          <div className="mx-auto flex justify-center border-2">
             <Image src={ExampleImage2} alt="example of the item page" />
           </div>
         </div>
