@@ -214,11 +214,9 @@ export async function updateUserById(
   id: number,
   {
     name,
-    username,
     mail,
     address,
   }: {
-    username: string;
     name: string;
     mail: string;
     address: string;
@@ -228,7 +226,6 @@ export async function updateUserById(
     UPDATE
       users
     SET
-      username = ${username},
       name = ${name},
       mail = ${mail},
       address = ${address}
@@ -237,7 +234,6 @@ export async function updateUserById(
     RETURNING
       id,
       name,
-      username,
       mail,
       address
   `;
@@ -259,6 +255,8 @@ export async function deleteUserById(id: number) {
   `;
   return camelcaseKeys(users[0]);
 }
+
+// SESSION
 
 export async function createSession(token: string, userId: number) {
   const [session] = await sql<[Session]>`

@@ -154,7 +154,7 @@ const EditItem = (props) => {
           </div>
           <button
             onClick={() => router.push('/itempage/')}
-            className="w-full shadow-lg mt-10 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
+            className="w-full shadow-lg mt-5 bg-blue-dark text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
           >
             BACK
           </button>
