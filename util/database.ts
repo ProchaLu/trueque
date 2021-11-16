@@ -688,6 +688,23 @@ export async function getTradelistByUserId(userId: number) {
   });
 }
 
+export async function deleteTradelistItemByTradelistId(id: number) {
+  if (!id) return undefined;
+  const wantlist = await sql<Wantlist[]>`
+    DELETE FROM
+      tradelist
+    WHERE
+      id=${id}
+    RETURNING
+      id,
+      user_id,
+      user_exchange_item_id,
+			item_user_id,
+			item_id
+  `;
+  return camelcaseKeys(wantlist);
+}
+
 export async function getTradelistByAllUserId(userId: number) {
   if (!userId) return undefined;
   const tradelist = await sql<[Tradelist]>`
@@ -704,11 +721,17 @@ export async function getTradelistByAllUserId(userId: number) {
   });
 }
 
-export async function getTradelistForUserWant(userId: number, itemId: number) {
+export async function getTradelistForUserWant(
+  id: number,
+  userId: number,
+  itemId: number,
+) {
+  if (!id) return undefined;
   if (!userId) return undefined;
   if (!itemId) return undefined;
   const [allList] = await sql<All[]>`
   SELECT
+    tradelist.id AS id,
     users.id AS want_user_id,
     users.username AS want_user_name,
     users.mail AS want_user_mail,
@@ -719,9 +742,11 @@ export async function getTradelistForUserWant(userId: number, itemId: number) {
     items.item_price AS want_user_item_price,
     items.description AS want_user_item_description
   FROM
-  users,
-    items
+    users,
+    items,
+    tradelist
    WHERE
+    tradelist.id = ${id} AND
     users.id = ${userId} AND
     items.id = ${itemId}
 `;

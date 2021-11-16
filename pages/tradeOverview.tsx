@@ -73,10 +73,19 @@ const tradeOverview = (props) => {
                       DETAILS
                     </button>
                     <button
-                      onClick={() => console.log('DELETE')}
+                      onClick={async (event) => {
+                        event.preventDefault();
+                        await fetch(
+                          `http://localhost:3000/api/tradelist/${tradelist.id}`,
+                          {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                          },
+                        );
+                      }}
                       className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
                     >
-                      DELETE
+                      DELETE {tradelist.id}
                     </button>
                   </div>
                 </div>
@@ -149,10 +158,19 @@ const tradeOverview = (props) => {
                       DETAILS
                     </button>
                     <button
-                      onClick={() => console.log('DELETE')}
+                      onClick={async (event) => {
+                        event.preventDefault();
+                        await fetch(
+                          `http://localhost:3000/api/tradelist/${tradelist.id}`,
+                          {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                          },
+                        );
+                      }}
                       className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
                     >
-                      DELETE
+                      DELETE {tradelist.id}
                     </button>
                   </div>
                 </div>
@@ -203,6 +221,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   for (let i = 0; i < tradelistByUserWant.length; i++) {
     tradelistWantArrayByWantItem.push(
       await getTradelistForUserWant(
+        tradelistByUserWant[i].id,
         tradelistByUserWant[i].userId,
         tradelistByUserWant[i].userExchangeItemId,
       ),
@@ -236,6 +255,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   for (let i = 0; i < tradelistByUserHave.length; i++) {
     tradelistHaveArrayByWanttItem.push(
       await getTradelistForUserWant(
+        tradelistByUserHave[i].id,
         tradelistByUserHave[i].userId,
         tradelistByUserHave[i].userExchangeItemId,
       ),

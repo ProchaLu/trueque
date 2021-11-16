@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
 import { Errors } from '../util/types';
-import { RegisterResponse } from './api/tradelist';
+import { RegisterResponse } from './api/tradelist/tradelist';
 
 const Notifications = (props) => {
   const router = useRouter();

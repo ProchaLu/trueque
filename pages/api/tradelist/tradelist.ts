@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { insertItemtoTradelist, Item, User } from '../../util/database';
-import { Errors } from '../../util/types';
+import { insertItemtoTradelist, Item, User } from '../../../util/database';
+import { Errors } from '../../../util/types';
 
 export type RegisterRequest = {
   userId: number;
