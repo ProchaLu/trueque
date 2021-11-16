@@ -98,18 +98,21 @@ const Notifications = (props) => {
                           headers: { 'Content-Type': 'application/json' },
                         },
                       );
-                      const registerResponse = await fetch('api/tradelist', {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json',
+                      const registerResponse = await fetch(
+                        'api/tradelist/tradelist',
+                        {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify({
+                            userId: list.wantUserId,
+                            userExchangeItemId: list.wantUserItemId,
+                            itemUserId: list.haveUserId,
+                            itemId: list.haveUserItemId,
+                          }),
                         },
-                        body: JSON.stringify({
-                          userId: list.wantUserId,
-                          userExchangeItemId: list.wantUserItemId,
-                          itemUserId: list.haveUserId,
-                          itemId: list.haveUserItemId,
-                        }),
-                      });
+                      );
                       const addTradelistJson =
                         (await registerResponse.json()) as RegisterResponse;
                       if ('errors' in addTradelistJson) {
