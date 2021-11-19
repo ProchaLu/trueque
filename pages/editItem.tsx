@@ -3,14 +3,20 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { List, ListItem, Range } from 'tailwind-mobile/react';
 import Layout from '../components/Layout';
+import { Item } from '../util/database';
 import { Errors } from '../util/types';
 
-const EditItem = (props) => {
+type Props = {
+  notificationLength?: number;
+  editItem: Item;
+};
+
+const EditItem = (props: Props) => {
   const [newPriceRange, setNewPriceRange] = useState(10);
   const [newItemName, setNewItemName] = useState('');
   const [newItemPrice, setNewItemPrice] = useState(0);
   const [newDescription, setNewDescription] = useState('');
-  const [errors, setErrors] = useState<Errors>([]);
+  const [errors] = useState<Errors>([]);
 
   const router = useRouter();
 
@@ -21,7 +27,7 @@ const EditItem = (props) => {
     description: string,
     priceRange: number,
   ) => {
-    const userResponse = await fetch(`/api/items/${id}`, {
+    await fetch(`/api/items/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -34,7 +40,7 @@ const EditItem = (props) => {
   };
 
   return (
-    <Layout>
+    <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl my-2 mx-auto px-4 py-5 text-xl lg:py-10 ">
         <h1 className="mb-10 text-center text-3xl font-bold">EDIT ITEM</h1>
         <form>

@@ -2,11 +2,17 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React from 'react';
 import Layout from '../components/Layout';
+import { Item } from '../util/database';
 
-const Wantlist = (props) => {
+type Props = {
+  likedItems: Item;
+  notificationLength?: number;
+};
+
+const Wantlist = (props: Props) => {
   const router = useRouter();
   return (
-    <Layout>
+    <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl  mx-auto px-4 py-5 lg:py-10">
         <h1 className="mb-10 text-center text-3xl font-bold">WANTLIST</h1>
         {props.likedItems.length === 0 ? (

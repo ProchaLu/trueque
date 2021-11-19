@@ -1,10 +1,12 @@
+import { GetServerSidePropsContext } from 'next';
+
 const UserIndex = () => {
   return <div>UserIndex</div>;
 };
 
 export default UserIndex;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { getValidSessionByToken } = await import('../../util/database');
 
   const sessionToken = context.req.cookies.sessionToken;

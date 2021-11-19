@@ -8,6 +8,7 @@ import { RegisterResponse } from './api/itemRegister';
 
 type Props = {
   refreshUsername: () => void;
+  notificationLength?: number;
   userId: number;
 };
 
@@ -74,7 +75,7 @@ const AddItem = (props: Props) => {
   };
 
   return (
-    <Layout>
+    <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl my-2 mx-auto px-4 py-5 text-xl lg:py-10 ">
         <h1 className="mb-10 text-center text-3xl font-bold">ADD ITEM</h1>
         <form>

@@ -40,3 +40,22 @@ const MyApp = ({ Component, pageProps }) => {
 };
 
 export default MyApp;
+
+export async function getServerSideProps(context) {
+  const {
+    getValidSessionByToken,
+    getWantlistbyItemUserId,
+    getWantlistAll,
+    getHavelistAll,
+  } = await import('../util/database');
+
+  const sessionToken = context.req.cookies.sessionToken;
+
+  const session = await getValidSessionByToken(sessionToken);
+
+  console.log(session);
+
+  return {
+    props: {},
+  };
+}

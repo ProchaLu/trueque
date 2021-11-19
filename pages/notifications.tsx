@@ -11,7 +11,7 @@ const Notifications = (props) => {
   const [errors, setErrors] = useState<Errors>([]);
 
   return (
-    <Layout>
+    <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl mx-auto px-4 py-5 lg:py-10">
         <h1 className="mb-10 text-center text-3xl font-bold">NOTIFICATIONS</h1>
         {props.wantlist.length === 0 ? (
@@ -21,7 +21,7 @@ const Notifications = (props) => {
             {props.wantlist.map((list) => {
               return (
                 <div
-                  key={`list-li-${list.wantUserId}-${list.haveUserId}-${list.wantUserItemId}`}
+                  key={`list-li-${list.wantUserId}-${list.haveUserId}-${list.wantUserItemId}-${list.haveUserItemId}`}
                 >
                   <div className="bg-blue-light">
                     <div className="m-4 py-2 grid grid-cols-2 gap-2 place-content-center">

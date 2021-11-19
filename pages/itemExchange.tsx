@@ -2,10 +2,19 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
+import { Item } from '../util/database';
 import { Errors } from '../util/types';
+import { User } from './api/users/[userId]';
 import { RegisterResponse } from './api/wantlist/addWantlist';
 
-const ItemExchange = (props) => {
+type Props = {
+  user: User;
+  exchangeItem: Item;
+  notificationLength?: number;
+  itemPriceRange:
+};
+
+const ItemExchange = (props: Props) => {
   const router = useRouter();
 
   const [errors, setErrors] = useState<Errors>([]);
@@ -37,7 +46,7 @@ const ItemExchange = (props) => {
   };
 
   return (
-    <Layout>
+    <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl text-center  mx-auto p-4    md:p-10">
         <h1 className="mb-2 text-3xl font-bold">ITEM EXCHANGE</h1>
         <h2 className="text-2xl text-left font-bold">

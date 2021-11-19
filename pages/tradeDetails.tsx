@@ -1,11 +1,18 @@
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
+import { Item, User } from '../util/database';
 
-const TradeDetails = (props) => {
+type Props = {
+  item: Item;
+  notificationLength?: number;
+  user: User;
+};
+
+const TradeDetails = (props: Props) => {
   const router = useRouter();
   return (
-    <Layout>
+    <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl text-center  mx-auto p-4 md:p-10">
         <h1 className="mb-5 text-center text-3xl font-bold">DETAILS</h1>
         <h3 className="text-2xl font-bold text-center mb-4">

@@ -6,7 +6,7 @@ const Itempage = (props) => {
   const router = useRouter();
 
   return (
-    <Layout>
+    <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl  mx-auto px-2 py-2 lg:py-10">
         <h1 className="mb-10 text-center text-3xl font-bold">ITEM PAGE</h1>
         {props.items.length === 0 ? (

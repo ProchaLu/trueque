@@ -67,6 +67,9 @@ const Navbar = (props) => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <span className="inline-flex items-center justify-center mb-8 -mx-10 z-10 px-2 py-1 text-xs font-bold leading-none text-bright bg-red rounded-full">
+                  {props.notificationLength > 0 ? props.notificationLength : 0}
+                </span>
                 <button
                   onClick={() => router.push('/notifications/')}
                   type="button"

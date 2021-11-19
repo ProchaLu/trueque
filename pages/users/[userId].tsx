@@ -1,15 +1,18 @@
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import { User } from '../../util/database';
 
 type Props = {
   user: User;
+  notificationLength?: number;
+  username?: string;
 };
 
 const SingleUser = (props: Props) => {
   const router = useRouter();
+  const [notificationLength, setNotificationLength] = useState('');
 
   const deleteUser = async (id: number) => {
     const userResponse = await fetch(`/api/users/${id}`, {
@@ -19,8 +22,17 @@ const SingleUser = (props: Props) => {
     router.push('/');
   };
 
+  useEffect(() => {
+    setNotificationLength(props.notificationLength);
+  }, [props.notificationLength]);
+
+  console.log(notificationLength);
+
   return (
-    <Layout>
+    <Layout
+      notificationLength={props.notificationLength}
+      username={props.username}
+    >
       <div className="max-w-7xl  mx-auto p-4 md:p-10 text-center">
         <h1 className="font-bold text-3xl m-10">Welcome {props.user.name}!</h1>
         <h2 className="font-bold text-2xl m-10">Let us start trading</h2>
@@ -57,9 +69,8 @@ const SingleUser = (props: Props) => {
 export default SingleUser;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { getUser, getUserBySessionToken } = await import(
-    '../../util/database'
-  );
+  const { getUser, getUserBySessionToken, getWantlistbyItemUserId } =
+    await import('../../util/database');
 
   const sessionToken = context.req.cookies.sessionToken;
 
@@ -86,9 +97,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const user = await getUser(Number(context.query.userId));
 
+  const tradeNotification = await getWantlistbyItemUserId(user.id);
+
+  const notificationLength = tradeNotification.length;
+
   return {
     props: {
       user: user,
+      notificationLength: notificationLength,
     },
   };
 }

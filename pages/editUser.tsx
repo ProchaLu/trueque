@@ -2,13 +2,19 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
+import { User } from '../util/database';
 import { Errors } from '../util/types';
 
-const EditUser = (props) => {
+type Props = {
+  notificationLength?: number;
+  user: User;
+};
+
+const EditUser = (props: Props) => {
   const [newName, setNewName] = useState('');
   const [newMail, setNewMail] = useState('');
   const [newAddress, setNewAddress] = useState('');
-  const [errors, setErrors] = useState<Errors>([]);
+  const [errors] = useState<Errors>([]);
 
   const router = useRouter();
 
@@ -18,7 +24,7 @@ const EditUser = (props) => {
     mail: string,
     address: string,
   ) => {
-    const userResponse = await fetch(`/api/users/${id}`, {
+    await fetch(`/api/users/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -30,7 +36,7 @@ const EditUser = (props) => {
   };
 
   return (
-    <Layout>
+    <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl my-2 mx-auto px-4 py-5 text-xl lg:py-10 ">
         <h1 className="mb-10 text-center text-3xl font-bold">EDIT USER</h1>
         <form>

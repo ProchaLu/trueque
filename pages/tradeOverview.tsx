@@ -2,10 +2,18 @@ import { GetServerSidePropsContext } from 'next';
 import router from 'next/router';
 import Layout from '../components/Layout';
 import { setParsedCookie } from '../util/cookies';
+import { Item } from '../util/database';
 
-const tradeOverview = (props) => {
+type Props = {
+  tradelistHave: Item;
+  tradelistWant: Item;
+  notificationLength?: number;
+  username?: string;
+};
+
+const tradeOverview = (props: Props) => {
   return (
-    <Layout>
+    <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl  mx-auto px-4 py-5 lg:py-10">
         <h1 className="mb-5 text-center text-3xl font-bold">TRADE OVERVIEW</h1>
         <h3 className="text-2xl font-bold text-center mb-4">
