@@ -95,7 +95,7 @@ const EditItem = (props: Props) => {
               </span>
             </label>
 
-            <input
+            <textarea
               className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
               id="description"
               placeholder="Description"

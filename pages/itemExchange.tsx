@@ -11,7 +11,7 @@ type Props = {
   user: User;
   exchangeItem: Item;
   notificationLength?: number;
-  itemPriceRange:
+  itemPriceRange: Item;
 };
 
 const ItemExchange = (props: Props) => {
@@ -37,7 +37,6 @@ const ItemExchange = (props: Props) => {
       setErrors(addWantlistJson.errors);
       return;
     }
-    props.refreshUsername();
   };
 
   const onClickYesWithRouting = () => {
