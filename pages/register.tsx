@@ -1,7 +1,10 @@
 import { GetServerSidePropsContext } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from 'react-places-autocomplete';
 import LayoutBeforeLogin from '../components/LayoutBeforeLogin';
 import { Errors } from '../util/types';
 import { RegisterResponse } from './api/register';
