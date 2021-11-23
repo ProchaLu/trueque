@@ -81,7 +81,10 @@ const Navbar = (props) => {
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
                   <div>
-                    <Menu.Button className="bg-dark flex text-base rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white focus:ring-white">
+                    <Menu.Button
+                      data-cy="userMenu"
+                      className="bg-dark flex text-base rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white focus:ring-white"
+                    >
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
@@ -104,6 +107,7 @@ const Navbar = (props) => {
                         {({ active }) => (
                           <Link href="/users">
                             <a
+                              data-cy="profile"
                               className={classNames(
                                 active ? 'bg-blue-light' : '',
                                 'block px-4 py-2 text-base text-dark',
@@ -118,6 +122,7 @@ const Navbar = (props) => {
                         {({ active }) => (
                           <Link href="/logout">
                             <a
+                              data-cy="logout"
                               className={classNames(
                                 active ? 'bg-blue-light' : '',
                                 'block px-4 py-2 text-base text-dark',

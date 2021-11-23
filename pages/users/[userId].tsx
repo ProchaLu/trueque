@@ -31,6 +31,7 @@ const SingleUser = (props: Props) => {
         <h1 className="font-bold text-3xl m-10">Welcome {props.user.name}!</h1>
         <h2 className="font-bold text-2xl m-10">Let us start trading</h2>
         <button
+          data-cy="itemPage"
           onClick={() => router.push('/itempage/')}
           className="w-full bg-blue text-bright text-xl font-bold py-2 px-10  mb-5 rounded hover:bg-blue-light hover:text-dark"
         >
@@ -50,6 +51,7 @@ const SingleUser = (props: Props) => {
           EDIT USER
         </button>
         <button
+          data-cy="profileDelete"
           onClick={() => deleteUser(props.user.id)}
           className="w-full bg-red text-bright text-xl font-bold py-2 px-10 rounded hover:bg-red-light hover:text-dark"
         >

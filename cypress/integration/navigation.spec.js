@@ -1,5 +1,5 @@
 describe('Navigation', () => {
-  it('should navigate to most pages and check for some content', () => {
+  it('should navigate to homepage, login and logout', () => {
     // Navigate to home page
     cy.visit('http://localhost:3000');
     // Login Page
@@ -9,5 +9,9 @@ describe('Navigation', () => {
     cy.get('[data-cy="password"]').type('aa');
     // press Log In
     cy.get('[data-cy="loginButton"]').should('be.visible').click();
+    // click around
+    cy.get('[data-cy="userMenu"]').should('be.visible').click();
+    // logout
+    cy.get('[data-cy="logout"]').should('be.visible').click();
   });
 });
