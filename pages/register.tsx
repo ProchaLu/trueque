@@ -27,7 +27,7 @@ const RegisterPage = (props: Props) => {
   const libraries = ['places'];
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: (key = API_KEY),
+    googleMapsApiKey: 'AIzaSyDSSIEFPSWv8mx85eU7wqywyKB97k0Lsno',
     libraries,
   });
 
@@ -95,6 +95,7 @@ const RegisterPage = (props: Props) => {
             <label className="block text-dark text-normal font-bold mb-2">
               Username
               <input
+                data-cy="registerUsername"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Username"
                 value={username}
@@ -107,6 +108,7 @@ const RegisterPage = (props: Props) => {
             <label className="block text-dark text-normal font-bold mb-2">
               Password
               <input
+                data-cy="registerPassword"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
                 type="password"
                 placeholder="Password"
@@ -120,6 +122,7 @@ const RegisterPage = (props: Props) => {
             <label className="block text-dark text-normal font-bold mb-2">
               Name
               <input
+                data-cy="registerName"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Name"
                 value={name}
@@ -132,6 +135,7 @@ const RegisterPage = (props: Props) => {
             <label className="block text-dark text-normal font-bold mb-2">
               E-Mail
               <input
+                data-cy="registerMail"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="E-Mail"
                 value={mail}
@@ -157,6 +161,7 @@ const RegisterPage = (props: Props) => {
                   }) => (
                     <div>
                       <input
+                        data-cy="registerAddress"
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
                         {...getInputProps({ placeholder: 'Address' })}
                       />
@@ -187,7 +192,10 @@ const RegisterPage = (props: Props) => {
               <div key={`error-${error.message}`}>{error.message}</div>
             ))}
           </div>
-          <button className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
+          <button
+            data-cy="registerButton"
+            className="w-full bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
+          >
             REGISTER
           </button>
         </form>

@@ -28,7 +28,7 @@ const EditUser = (props: Props) => {
   const libraries = ['places'];
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: (key = API_KEY),
+    googleMapsApiKey: 'AIzaSyDSSIEFPSWv8mx85eU7wqywyKB97k0Lsno',
     libraries,
   });
 
