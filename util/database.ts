@@ -59,10 +59,11 @@ export type UserWithPasswordHash = User & {
 dotenvSafe.config();
 
 declare module globalThis {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  let __postgresSqlClient: ReturnType<typeof postgres> | undefined;
+  let postgresSqlClient: ReturnType<typeof postgres> | undefined;
 }
 
+// Connect only once to the database
+// https://github.com/vercel/next.js/issues/7811#issuecomment-715259370
 function connectOneTimeToDatabase() {
   let sql;
 
@@ -74,12 +75,11 @@ function connectOneTimeToDatabase() {
   } else {
     // When we're in development, make sure that we connect only
     // once to the database
-    if (!globalThis.__postgresSqlClient) {
-      globalThis.__postgresSqlClient = postgres();
+    if (!globalThis.postgresSqlClient) {
+      globalThis.postgresSqlClient = postgres();
     }
-    sql = globalThis.__postgresSqlClient;
+    sql = globalThis.postgresSqlClient;
   }
-
   return sql;
 }
 
