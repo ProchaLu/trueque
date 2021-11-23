@@ -50,6 +50,7 @@ const LoginPage = (props: { refreshUsername: () => void }) => {
             <label className="block text-dark text-normal font-bold mb-2">
               Username
               <input
+                data-cy="username"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Username"
                 value={username}
@@ -62,6 +63,7 @@ const LoginPage = (props: { refreshUsername: () => void }) => {
             <label className="block text-dark text-normal font-bold mb-2">
               Password
               <input
+                data-cy="password"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
                 type="password"
                 placeholder="Password"
@@ -76,7 +78,10 @@ const LoginPage = (props: { refreshUsername: () => void }) => {
               <div key={`error-${error.message}`}>{error.message}</div>
             ))}
           </div>
-          <button className="w-full shadow-lg bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark">
+          <button
+            data-cy="loginButton"
+            className="w-full shadow-lg bg-blue text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
+          >
             LOG IN
           </button>
         </form>

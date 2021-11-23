@@ -13,7 +13,10 @@ const NavbarBeforeLogin = () => {
           />
         </div>
         <Link href="/login/">
-          <a className="absolute right-0 mx-4 text-bright px-3 py-2 rounded-md text-base font-medium hover:bg-blue-light hover:text-dark">
+          <a
+            data-cy="login"
+            className="absolute right-0 mx-4 text-bright px-3 py-2 rounded-md text-base font-medium hover:bg-blue-light hover:text-dark"
+          >
             LOGIN
           </a>
         </Link>
