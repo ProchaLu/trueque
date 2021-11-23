@@ -1,8 +1,8 @@
-/* describe('Register', () => {
+describe('Register', () => {
   it('should register user and delete the user', () => {
     // Navigate to home page
     cy.visit('http://localhost:3000');
-    // Login Page
+    /*     // Login Page
     cy.get('[data-cy="signUp"]').should('be.visible').click();
     // Login User
     cy.get('[data-cy="registerUsername"]').type('dd');
@@ -19,6 +19,6 @@
     // profile page
     cy.get('[data-cy="profile"]').should('be.visible').click();
     // delete user
-    cy.get('[data-cy="profileDelete"]').should('be.visible').click();
+    cy.get('[data-cy="profileDelete"]').should('be.visible').click(); */
   });
-}); */
+});
