@@ -10,7 +10,8 @@ describe('Navigation', () => {
     // press Log In
     cy.get('[data-cy="loginButton"]').should('be.visible').click();
     // click around
-    cy.get('[data-cy="userMenu"]').should('be.visible').click();
+    cy.get('[data-cy="userMenu"]').should('be.visible');
+    cy.get('[data-cy="userMenu"]').click();
     // logout
     cy.get('[data-cy="logout"]').should('be.visible').click();
   });
