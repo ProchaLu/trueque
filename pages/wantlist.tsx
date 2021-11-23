@@ -47,13 +47,10 @@ const Wantlist = (props: Props) => {
                     <button
                       onClick={async (event) => {
                         event.preventDefault();
-                        await fetch(
-                          `http://localhost:3000/api/wantlist/${likedItem.id}`,
-                          {
-                            method: 'DELETE',
-                            headers: { 'Content-Type': 'application/json' },
-                          },
-                        );
+                        await fetch(`/api/wantlist/${likedItem.id}`, {
+                          method: 'DELETE',
+                          headers: { 'Content-Type': 'application/json' },
+                        });
                         router.reload();
                       }}
                       className="w-full shadow-lg mb-5 bg-red text-bright text-xl font-bold py-2 px-10 rounded hover:bg-red-light hover:text-dark"

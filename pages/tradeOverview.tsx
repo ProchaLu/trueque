@@ -83,13 +83,10 @@ const tradeOverview = (props: Props) => {
                     <button
                       onClick={async (event) => {
                         event.preventDefault();
-                        await fetch(
-                          `http://localhost:3000/api/tradelist/${tradelist.id}`,
-                          {
-                            method: 'DELETE',
-                            headers: { 'Content-Type': 'application/json' },
-                          },
-                        );
+                        await fetch(`/api/tradelist/${tradelist.id}`, {
+                          method: 'DELETE',
+                          headers: { 'Content-Type': 'application/json' },
+                        });
                         router.reload();
                       }}
                       className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
@@ -169,13 +166,10 @@ const tradeOverview = (props: Props) => {
                     <button
                       onClick={async (event) => {
                         event.preventDefault();
-                        await fetch(
-                          `http://localhost:3000/api/tradelist/${tradelist.id}`,
-                          {
-                            method: 'DELETE',
-                            headers: { 'Content-Type': 'application/json' },
-                          },
-                        );
+                        await fetch(`/api/tradelist/${tradelist.id}`, {
+                          method: 'DELETE',
+                          headers: { 'Content-Type': 'application/json' },
+                        });
                         router.reload();
                       }}
                       className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"

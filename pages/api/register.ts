@@ -17,6 +17,8 @@ export type RegisterRequest = {
   name: string;
   mail: string;
   address: string;
+  lat: number;
+  lng: number;
 };
 
 export type RegisterResponse = { errors: Errors } | { user: User };
@@ -29,13 +31,14 @@ export default async function registerHandler(
     !req.body.username ||
     !req.body.password ||
     !req.body.name ||
-    !req.body.mail
+    !req.body.mail ||
+    !req.body.address
   ) {
     res.status(400).send({
       errors: [
         {
           message:
-            'Request does not contain username, password, name and E-Mail',
+            'Request does not contain username, password, name, E-Mail and Address',
         },
       ],
     });
@@ -50,6 +53,10 @@ export default async function registerHandler(
     const mail = req.body.mail;
 
     const address = req.body.address;
+
+    const lat = req.body.lat;
+
+    const lng = req.body.lng;
 
     const existingUser = await getUserWithPasswordHashByUsername(username);
 
@@ -68,6 +75,8 @@ export default async function registerHandler(
       passwordHash: passwordHash,
       mail: mail,
       address: address,
+      lat: lat,
+      lng: lng,
     });
 
     // clean old sessions

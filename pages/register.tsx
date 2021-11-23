@@ -1,3 +1,4 @@
+import { useLoadScript } from '@react-google-maps/api';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -18,8 +19,32 @@ const RegisterPage = (props: Props) => {
   const [mail, setMail] = useState('');
   const [address, setAddress] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
 
   const router = useRouter();
+
+  const libraries = ['places'];
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyDSSIEFPSWv8mx85eU7wqywyKB97k0Lsno',
+    libraries,
+  });
+
+  if (loadError) return 'Error loading maps';
+  if (!isLoaded) return 'Loading Maps';
+
+  const handleChange = (value: string) => {
+    setAddress(value);
+  };
+
+  const handleSelect = async (value: string) => {
+    const results = await geocodeByAddress(value);
+    const latLng = await getLatLng(results[0]);
+    setAddress(value);
+    setLat(latLng.lat);
+    setLng(latLng.lng);
+  };
 
   return (
     <LayoutBeforeLogin>
@@ -42,6 +67,8 @@ const RegisterPage = (props: Props) => {
                 name: name,
                 mail: mail,
                 address: address,
+                lat: lat,
+                lng: lng,
                 csrfToken: props.csrfToken,
               }),
             });
@@ -110,19 +137,50 @@ const RegisterPage = (props: Props) => {
                 value={mail}
                 required
                 onChange={(event) => setMail(event.currentTarget.value)}
-              />{' '}
+              />
             </label>
           </div>
           <div className="mb-10">
-            <label className="block text-dark text-normal font-bold mb-2">
+            <div className="block text-dark text-normal font-bold mb-2">
               Address
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Address"
-                value={address}
-                onChange={(event) => setAddress(event.currentTarget.value)}
-              />
-            </label>
+              <div>
+                <PlacesAutocomplete
+                  value={address}
+                  onChange={handleChange}
+                  onSelect={handleSelect}
+                >
+                  {({
+                    getInputProps,
+                    suggestions,
+                    getSuggestionItemProps,
+                    loading,
+                  }) => (
+                    <div>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
+                        {...getInputProps({ placeholder: 'Address' })}
+                      />
+                      <div>
+                        {loading && <div>Loading...</div>}
+                        {suggestions.map((suggestion) => {
+                          const style = suggestion.active
+                            ? { backgroundColor: '#BBE1FA', cursor: 'pointer' }
+                            : { backgroundColor: '#fff', cursor: 'pointer' };
+                          return (
+                            <div
+                              key={`li-suggestion-${suggestion.placeId}`}
+                              {...getSuggestionItemProps(suggestion, { style })}
+                            >
+                              {suggestion.description}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </PlacesAutocomplete>
+              </div>
+            </div>
           </div>
           <div className="text-red mb-5">
             {errors.map((error) => (

@@ -18,7 +18,9 @@ export type User = {
   username: string;
   name: string;
   mail: string;
-  address: string | null;
+  address: string;
+  lat: number;
+  lng: number;
 };
 
 export type Item = {
@@ -96,7 +98,6 @@ export async function getUsers() {
       users
   `;
   return users.map((user) => {
-    // Convert the snake case favorite_color to favoriteColor
     return camelcaseKeys(user);
   });
 }
@@ -110,7 +111,9 @@ export async function getUser(id: number) {
       name,
       username,
       mail,
-      address
+      address,
+      lat,
+      lng
     FROM
       users
     WHERE
@@ -161,23 +164,29 @@ export async function createUser({
   username,
   mail,
   address,
+  lat,
+  lng,
 }: {
   name: string;
   username: string;
   mail: string;
   address: string;
+  lat: number;
+  lng: number;
 }) {
   const users = await sql`
     INSERT INTO users
-      (username, name, mail, address)
+      (username, name, mail, address, lat, lng)
     VALUES
-      (${username}, ${name}, ${mail}, ${address})
+      (${username}, ${name}, ${mail}, ${address}, ${lat}, ${lng})
     RETURNING
       id,
       name,
       username,
       mail,
-      address
+      address,
+      lat,
+      lng;
   `;
   return camelcaseKeys(users[0]);
 }
@@ -188,24 +197,30 @@ export async function insertUser({
   name,
   mail,
   address,
+  lat,
+  lng,
 }: {
   username: string;
   passwordHash: string;
   name: string;
   mail: string;
   address: string;
+  lat: number;
+  lng: number;
 }) {
   const [user] = await sql<[User]>`
     INSERT INTO users
-      (username, password_hash, name, mail, address)
+      (username, password_hash, name, mail, address, lat, lng)
     VALUES
-      (${username}, ${passwordHash},${name}, ${mail}, ${address})
+      (${username}, ${passwordHash},${name}, ${mail}, ${address}, ${lat}, ${lng})
     RETURNING
       id,
       username,
       name,
       mail,
-      address;
+      address,
+      lat,
+      lng;
   `;
   return camelcaseKeys(user);
 }
@@ -216,10 +231,14 @@ export async function updateUserById(
     name,
     mail,
     address,
+    lat,
+    lng,
   }: {
     name: string;
     mail: string;
     address: string;
+    lat: number;
+    lng: number;
   },
 ) {
   const users = await sql`
@@ -228,14 +247,19 @@ export async function updateUserById(
     SET
       name = ${name},
       mail = ${mail},
-      address = ${address}
+      address = ${address},
+      lat = ${lat},
+      lng = ${lng}
+
     WHERE
       id = ${id}
     RETURNING
       id,
       name,
       mail,
-      address
+      address,
+      lat,
+      lng;
   `;
   return camelcaseKeys(users[0]);
 }
@@ -251,7 +275,9 @@ export async function deleteUserById(id: number) {
       name,
       username,
       mail,
-      address
+      address,
+      lat,
+      lng;
   `;
   return camelcaseKeys(users[0]);
 }

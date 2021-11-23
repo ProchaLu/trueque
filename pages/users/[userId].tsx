@@ -25,8 +25,6 @@ const SingleUser = (props: Props) => {
     setNotificationLength(props.notificationLength);
   }, [props.notificationLength]);
 
-  console.log(notificationLength);
-
   return (
     <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl  mx-auto p-4 md:p-10 text-center">

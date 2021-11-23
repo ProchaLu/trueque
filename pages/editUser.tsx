@@ -1,6 +1,11 @@
+import { useLoadScript } from '@react-google-maps/api';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from 'react-places-autocomplete';
 import Layout from '../components/Layout';
 import { User } from '../util/database';
 import { Errors } from '../util/types';
@@ -15,14 +20,40 @@ const EditUser = (props: Props) => {
   const [newMail, setNewMail] = useState('');
   const [newAddress, setNewAddress] = useState('');
   const [errors] = useState<Errors>([]);
+  const [newLat, setNewLat] = useState(0);
+  const [newLng, setNewLng] = useState(0);
 
   const router = useRouter();
+
+  const libraries = ['places'];
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyDSSIEFPSWv8mx85eU7wqywyKB97k0Lsno',
+    libraries,
+  });
+
+  if (loadError) return 'Error loading maps';
+  if (!isLoaded) return 'Loading Maps';
+
+  const handleChange = (value: string) => {
+    setNewAddress(value);
+  };
+
+  const handleSelect = async (value: string) => {
+    const results = await geocodeByAddress(value);
+    const latLng = await getLatLng(results[0]);
+    setNewAddress(value);
+    setNewLat(latLng.lat);
+    setNewLng(latLng.lng);
+  };
 
   const updateUser = async (
     id: number,
     name: string,
     mail: string,
     address: string,
+    lat: number,
+    lng: number,
   ) => {
     await fetch(`/api/users/${id}`, {
       method: 'PATCH',
@@ -31,6 +62,8 @@ const EditUser = (props: Props) => {
         name: name,
         mail: mail,
         address: address,
+        lat: lat,
+        lng: lng,
       }),
     });
   };
@@ -77,19 +110,46 @@ const EditUser = (props: Props) => {
             </div>
           </div>
           <div className="mb-10">
-            <label
-              htmlFor="address"
-              className="block text-dark text-normal font-bold mb-2"
-            >
+            <div className="block text-dark text-normal font-bold mb-2">
               Address
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
-              id="itemName"
-              placeholder="Name"
-              required
-              onChange={(e) => setNewAddress(e.currentTarget.value)}
-            />
+              <div>
+                <PlacesAutocomplete
+                  value={newAddress}
+                  onChange={handleChange}
+                  onSelect={handleSelect}
+                >
+                  {({
+                    getInputProps,
+                    suggestions,
+                    getSuggestionItemProps,
+                    loading,
+                  }) => (
+                    <div>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-dark leading-tight focus:outline-none focus:shadow-outline"
+                        {...getInputProps({ placeholder: 'Address' })}
+                      />
+                      <div>
+                        {loading && <div>Loading...</div>}
+                        {suggestions.map((suggestion) => {
+                          const style = suggestion.active
+                            ? { backgroundColor: '#BBE1FA', cursor: 'pointer' }
+                            : { backgroundColor: '#fff', cursor: 'pointer' };
+                          return (
+                            <div
+                              key={`li-suggestion-${suggestion.placeId}`}
+                              {...getSuggestionItemProps(suggestion, { style })}
+                            >
+                              {suggestion.description}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </PlacesAutocomplete>
+              </div>
+            </div>
             <div>
               Address now:{' '}
               <span className="font-bold">{props.user.address}</span>
@@ -106,7 +166,14 @@ const EditUser = (props: Props) => {
           {newName.length && newMail.length && newAddress.length > 0 ? (
             <button
               onClick={() =>
-                updateUser(props.user.id, newName, newMail, newAddress)
+                updateUser(
+                  props.user.id,
+                  newName,
+                  newMail,
+                  newAddress,
+                  newLat,
+                  newLng,
+                )
               }
               className="w-full bg-blue shadow-lg text-bright text-xl font-bold py-2 px-10 rounded hover:bg-blue-light hover:text-dark"
             >

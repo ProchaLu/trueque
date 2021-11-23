@@ -1,3 +1,4 @@
+import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
@@ -7,10 +8,33 @@ type Props = {
   item: Item;
   notificationLength?: number;
   user: User;
+  latSum: number;
+  lngSum: number;
 };
+
+const mapContainerStyle = {
+  width: '90vw',
+  height: '90vh',
+};
+
+const libraries = ['places'];
+
+const options = { disableDefaultUI: true, zoomControl: true };
 
 const TradeDetails = (props: Props) => {
   const router = useRouter();
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyDSSIEFPSWv8mx85eU7wqywyKB97k0Lsno',
+  });
+
+  const center = {
+    lat: props.latSum,
+    lng: props.lngSum,
+  };
+
+  if (loadError) return 'Error loading maps';
+  if (!isLoaded) return 'Loading Maps';
+
   return (
     <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl text-center  mx-auto p-4 md:p-10">
@@ -34,13 +58,22 @@ const TradeDetails = (props: Props) => {
           <h3 className="text-2xl font-bold text-center mb-4">
             Middlewaypoint
           </h3>
-          <iframe
-            className="mx-auto"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2659.6940646226435!2d16.406720115650987!3d48.19324577922793!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476d075b1edff245%3A0xaef7a8ddf96bc82d!2sMarkhofgasse%2019%2C%201030%20Wien!5e0!3m2!1sde!2sat!4v1636728088678!5m2!1sde!2sat"
-            width="auto"
-            height="auto"
-            loading="lazy"
-          />
+          <div className="mx-auto p-0">
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              zoom={16}
+              center={center}
+              options={options}
+            >
+              {' '}
+              <Marker
+                position={{
+                  lat: Number(props.latSum),
+                  lng: Number(props.lngSum),
+                }}
+              />
+            </GoogleMap>
+          </div>
           <button
             onClick={() => router.push(`mailto:${props.user.mail}`)}
             className="w-full shadow-lg bg-blue-dark mt-5 text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-blue-light hover:text-dark"
@@ -82,7 +115,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const user = await getUser(item.userId);
 
+  const myUser = await getUser(session.userId);
+
+  const latSum = (Number(user.lat) + Number(myUser.lat)) / 2;
+
+  const lngSum = (Number(user.lng) + Number(myUser.lng)) / 2;
+
   return {
-    props: { item, user },
+    props: { item, user, latSum, lngSum },
   };
 }

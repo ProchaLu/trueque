@@ -11,6 +11,8 @@ export type RegisterRequest = {
   name: number;
   mail: string;
   address: string;
+  lat: number;
+  lng: number;
 };
 
 export type User = {
@@ -19,6 +21,8 @@ export type User = {
   name: number;
   mail: string;
   address: string;
+  lat: number;
+  lng: number;
 };
 
 export type RegisterResponse = { user: User };
@@ -41,6 +45,8 @@ export default async function handler(
       name: body.name,
       mail: body.mail,
       address: body.address,
+      lat: body.lat,
+      lng: body.lng,
     });
     return res.status(200).json(updatedUser);
   }

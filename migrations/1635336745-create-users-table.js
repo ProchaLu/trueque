@@ -8,7 +8,9 @@ exports.up = async function up(sql) {
       password_hash VARCHAR(60) NOT NULL,
       name VARCHAR(40) NOT NULL,
 			mail VARCHAR(60) NOT NULL,
-			address VARCHAR(60)
+			address VARCHAR(60) NOT NULL,
+      lat DECIMAL,
+      lng DECIMAL
     );
   `;
 };
