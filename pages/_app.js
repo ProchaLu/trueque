@@ -48,8 +48,6 @@ export async function getServerSideProps(context) {
 
   const session = await getValidSessionByToken(sessionToken);
 
-  console.log(session);
-
   return {
     props: {},
   };
