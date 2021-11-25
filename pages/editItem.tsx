@@ -12,7 +12,7 @@ type Props = {
 };
 
 const EditItem = (props: Props) => {
-  const [newPriceRange, setNewPriceRange] = useState(10);
+  const [newPriceRange, setNewPriceRange] = useState('10');
   const [newItemName, setNewItemName] = useState('');
   const [newItemPrice, setNewItemPrice] = useState(0);
   const [newDescription, setNewDescription] = useState('');
@@ -25,7 +25,7 @@ const EditItem = (props: Props) => {
     itemName: string,
     itemPrice: number,
     description: string,
-    priceRange: number,
+    priceRange: string,
   ) => {
     await fetch(`/api/items/${id}`, {
       method: 'PATCH',
@@ -121,7 +121,9 @@ const EditItem = (props: Props) => {
                       step={1}
                       min={0}
                       max={100}
-                      onChange={(e) => setNewPriceRange(e.currentTarget.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setNewPriceRange(e.currentTarget.value)
+                      }
                     />
                     <span>100%</span>
                   </>
