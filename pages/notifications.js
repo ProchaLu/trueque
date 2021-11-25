@@ -2,13 +2,12 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
-import { Errors } from '../util/types';
 import { RegisterResponse } from './api/tradelist/tradelist';
 
 const Notifications = (props) => {
   const router = useRouter();
 
-  const [errors, setErrors] = useState<Errors>([]);
+  const [errors, setErrors] = useState([]);
 
   return (
     <Layout notificationLength={props.notificationLength}>
@@ -74,13 +73,10 @@ const Notifications = (props) => {
                     <button
                       onClick={async (event) => {
                         event.preventDefault();
-                        await fetch(
-                          `http://localhost:3000/api/wantlist/${list.id}`,
-                          {
-                            method: 'DELETE',
-                            headers: { 'Content-Type': 'application/json' },
-                          },
-                        );
+                        await fetch(`api/wantlist/${list.id}`, {
+                          method: 'DELETE',
+                          headers: { 'Content-Type': 'application/json' },
+                        });
                         router.reload();
                       }}
                       className="w-auto shadow-lg bg-red text-bright text-xl font-bold py-2 mb-5 px-10 rounded hover:bg-red-light hover:text-dark"
@@ -91,13 +87,10 @@ const Notifications = (props) => {
                   <button
                     onClick={async (event) => {
                       event.preventDefault();
-                      await fetch(
-                        `http://localhost:3000/api/wantlist/${list.id}`,
-                        {
-                          method: 'DELETE',
-                          headers: { 'Content-Type': 'application/json' },
-                        },
-                      );
+                      await fetch(`api/wantlist/${list.id}`, {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                      });
                       const registerResponse = await fetch(
                         'api/tradelist/tradelist',
                         {
@@ -113,8 +106,7 @@ const Notifications = (props) => {
                           }),
                         },
                       );
-                      const addTradelistJson =
-                        (await registerResponse.json()) as RegisterResponse;
+                      const addTradelistJson = await registerResponse.json();
                       if ('errors' in addTradelistJson) {
                         setErrors(addTradelistJson.errors);
                         return;
@@ -142,7 +134,7 @@ const Notifications = (props) => {
 
 export default Notifications;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
   const {
     getValidSessionByToken,
     getWantlistbyItemUserId,

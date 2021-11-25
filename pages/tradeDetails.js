@@ -1,17 +1,6 @@
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
-import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
-import { Item, User } from '../util/database';
-
-type Props = {
-  item: Item;
-  notificationLength?: number;
-  user: User;
-  latSum: number;
-  lngSum: number;
-  googleAPI: string;
-};
 
 const mapContainerStyle = {
   width: '90vw',
@@ -22,7 +11,7 @@ const libraries = ['places'];
 
 const options = { disableDefaultUI: true, zoomControl: true };
 
-const TradeDetails = (props: Props) => {
+const TradeDetails = (props) => {
   const router = useRouter();
 
   const { isLoaded, loadError } = useLoadScript({
@@ -91,7 +80,7 @@ const TradeDetails = (props: Props) => {
 
 export default TradeDetails;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
   const { getValidSessionByToken, getItemByItemId, getUser } = await import(
     '../util/database'
   );
@@ -116,11 +105,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const itemId = Number(context.req.cookies.item);
 
-  const item: Item | undefined = await getItemByItemId(itemId);
+  const item = await getItemByItemId(itemId);
 
-  const user: User | undefined = await getUser(item.userId);
+  const user = await getUser(item.userId);
 
-  const myUser: User | undefined = await getUser(session.userId);
+  const myUser = await getUser(session.userId);
 
   const latSum = (Number(user.lat) + Number(myUser.lat)) / 2;
 
