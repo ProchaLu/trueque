@@ -2,14 +2,8 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React from 'react';
 import Layout from '../components/Layout';
-import { Item } from '../util/database';
 
-type Props = {
-  likedItems: Item;
-  notificationLength?: number;
-};
-
-const Wantlist = (props: Props) => {
+const Wantlist = (props) => {
   const router = useRouter();
   return (
     <Layout notificationLength={props.notificationLength}>
@@ -70,7 +64,7 @@ const Wantlist = (props: Props) => {
 
 export default Wantlist;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
   const { getValidSessionByToken, getWantlistByUserId, getItemsByWantlistId } =
     await import('../util/database');
 
