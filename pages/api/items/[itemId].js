@@ -1,36 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import {
   deleteItemByItemId,
   getItemByItemId,
   updateItemByItemId,
 } from '../../../util/database';
 
-export type RegisterRequest = {
-  id: number;
-  itemName: string;
-  userId: number;
-  itemPrice: number;
-  image: string;
-  description: string;
-  priceRange: number;
-};
-
-export type Item = {
-  id: number;
-  itemName: string;
-  userId: number;
-  itemPrice: number;
-  image: string;
-  description: string;
-  priceRange: number;
-};
-
-export type RegisterResponse = { item: Item };
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<RegisterResponse>,
-) {
+export default async function handler(req, res) {
   if (req.method === 'GET') {
     const item = await getItemByItemId(Number(req.query.id));
     res.status(200).json(item);
@@ -39,7 +13,7 @@ export default async function handler(
     return res.status(200).json(deletedItem);
   } else if (req.method === 'PATCH') {
     const body = req.body;
-    const query = req.query;
+    /* const query = req.query; */
 
     const updatedItem = await updateItemByItemId(Number(req.query.itemId), {
       itemName: body.itemName,
