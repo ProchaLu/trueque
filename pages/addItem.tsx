@@ -212,9 +212,16 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const sessionToken = context.req.cookies.sessionToken;
 
-  const session = await getValidSessionByToken(sessionToken);
+  const session:
+    | {
+        id: number;
+        token: string;
+        userId: number;
+        expiryTimestamp: Date;
+      }
+    | undefined = await getValidSessionByToken(sessionToken);
 
-  const userId = session.userId;
+  const userId = session?.userId;
 
   if (!session) {
     // Redirect the user when they have a session
