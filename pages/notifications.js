@@ -1,8 +1,6 @@
-import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
-import { RegisterResponse } from './api/tradelist/tradelist';
 
 const Notifications = (props) => {
   const router = useRouter();
@@ -73,7 +71,7 @@ const Notifications = (props) => {
                     <button
                       onClick={async (event) => {
                         event.preventDefault();
-                        await fetch(`api/wantlist/${list.id}`, {
+                        await fetch(`/api/wantlist/${list.id}`, {
                           method: 'DELETE',
                           headers: { 'Content-Type': 'application/json' },
                         });
@@ -87,7 +85,7 @@ const Notifications = (props) => {
                   <button
                     onClick={async (event) => {
                       event.preventDefault();
-                      await fetch(`api/wantlist/${list.id}`, {
+                      await fetch(`/api/wantlist/${list.id}`, {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
                       });

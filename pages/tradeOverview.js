@@ -1,17 +1,8 @@
-import { GetServerSidePropsContext } from 'next';
 import router from 'next/router';
 import Layout from '../components/Layout';
 import { setParsedCookie } from '../util/cookies';
-import { Item } from '../util/database';
 
-type Props = {
-  tradelistHave: Item;
-  tradelistWant: Item;
-  notificationLength?: number;
-  username?: string;
-};
-
-const tradeOverview = (props: Props) => {
+const tradeOverview = (props) => {
   return (
     <Layout notificationLength={props.notificationLength}>
       <div className="max-w-7xl  mx-auto px-4 py-5 lg:py-10">
@@ -189,7 +180,7 @@ const tradeOverview = (props: Props) => {
 
 export default tradeOverview;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
   const {
     getValidSessionByToken,
     getTradelistByItemUserId,
