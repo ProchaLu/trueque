@@ -28,7 +28,13 @@ const RegisterPage = (props: Props) => {
 
   const router = useRouter();
 
-  const libraries: string[] = ['places'];
+  const libraries: (
+    | 'places'
+    | 'drawing'
+    | 'geometry'
+    | 'localContext'
+    | 'visualization'
+  )[] = ['places'];
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: props.googleAPI,

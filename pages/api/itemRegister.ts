@@ -44,7 +44,7 @@ export default async function addItemHandler(
 
     const description = req.body.description;
 
-    const item = await insertItem({
+    const item: Item = await insertItem({
       itemName: itemName,
       userId: userId,
       image: image,

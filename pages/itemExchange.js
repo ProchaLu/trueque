@@ -1,12 +1,11 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
-import { Errors } from '../util/types';
 
 const ItemExchange = (props) => {
   const router = useRouter();
 
-  const [errors, setErrors] = useState < Errors > [];
+  const [errors, setErrors] = useState([]);
 
   const onClickYes = async () => {
     const registerResponse = await fetch('api/wantlist/addWantlist', {

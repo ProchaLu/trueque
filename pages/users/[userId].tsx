@@ -11,10 +11,10 @@ type Props = {
 
 const SingleUser = (props: Props) => {
   const router = useRouter();
-  const [notificationLength, setNotificationLength] = useState('');
+  const [notificationLength, setNotificationLength] = useState();
 
   const deleteUser = async (id: number) => {
-    const userResponse = await fetch(`/api/users/${id}`, {
+    await fetch(`/api/users/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     });
