@@ -10,6 +10,7 @@ type Props = {
   refreshUsername: () => void;
   notificationLength?: number;
   userId: number;
+  cloudinaryAPI: string;
 };
 
 const AddItem = (props: Props) => {
@@ -32,7 +33,7 @@ const AddItem = (props: Props) => {
     formData.append('upload_preset', 'truequeUpload');
     setLoading(true);
     const res = await fetch(
-      '	https://api.cloudinary.com/v1_1/trueque-image/upload',
+      `	https://api.cloudinary.com/v1_1/${props.cloudinaryAPI}/upload`,
       {
         method: 'POST',
         body: formData,
@@ -225,7 +226,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
+  const cloudinaryAPI = process.env.CLOUDINARY_KEY;
+
   return {
-    props: { userId },
+    props: { userId, cloudinaryAPI },
   };
 }

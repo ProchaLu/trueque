@@ -10,6 +10,7 @@ type Props = {
   user: User;
   latSum: number;
   lngSum: number;
+  googleAPI: string;
 };
 
 const mapContainerStyle = {
@@ -25,7 +26,7 @@ const TradeDetails = (props: Props) => {
   const router = useRouter();
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: YOUR_API_KEY,
+    googleMapsApiKey: props.googleAPI,
     libraries,
   });
 
@@ -60,7 +61,7 @@ const TradeDetails = (props: Props) => {
           <h3 className="text-2xl font-bold text-center mb-4">
             Middlewaypoint
           </h3>
-          <div className="mx-auto p-0">
+          <div className="mx-auto p-0 max-w-7xl">
             <GoogleMap
               mapContainerStyle={mapContainerStyle}
               zoom={16}
@@ -111,19 +112,21 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
+  const googleAPI = process.env.GOOGLE_API_KEY;
+
   const itemId = Number(context.req.cookies.item);
 
-  const item = await getItemByItemId(itemId);
+  const item: Item | undefined = await getItemByItemId(itemId);
 
-  const user = await getUser(item.userId);
+  const user: User | undefined = await getUser(item.userId);
 
-  const myUser = await getUser(session.userId);
+  const myUser: User | undefined = await getUser(session.userId);
 
   const latSum = (Number(user.lat) + Number(myUser.lat)) / 2;
 
   const lngSum = (Number(user.lng) + Number(myUser.lng)) / 2;
 
   return {
-    props: { item, user, latSum, lngSum },
+    props: { item, user, latSum, lngSum, googleAPI },
   };
 }

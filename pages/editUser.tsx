@@ -13,6 +13,7 @@ import { Errors } from '../util/types';
 type Props = {
   notificationLength?: number;
   user: User;
+  googleAPI: string;
 };
 
 const EditUser = (props: Props) => {
@@ -25,10 +26,10 @@ const EditUser = (props: Props) => {
 
   const router = useRouter();
 
-  const libraries = ['places'];
+  const libraries: string[] = ['places'];
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: YOUR_API_KEY,
+    googleMapsApiKey: props.googleAPI,
     libraries,
   });
 
@@ -136,11 +137,14 @@ const EditUser = (props: Props) => {
                             ? { backgroundColor: '#BBE1FA', cursor: 'pointer' }
                             : { backgroundColor: '#fff', cursor: 'pointer' };
                           return (
-                            <div
-                              key={`li-suggestion-${suggestion.placeId}`}
-                              {...getSuggestionItemProps(suggestion, { style })}
-                            >
-                              {suggestion.description}
+                            <div key={`li-suggestion-${suggestion.placeId}`}>
+                              <div
+                                {...getSuggestionItemProps(suggestion, {
+                                  style,
+                                })}
+                              >
+                                {suggestion.description}
+                              </div>
                             </div>
                           );
                         })}
@@ -214,10 +218,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
+  const googleAPI = process.env.GOOGLE_API_KEY;
 
   const user = await getUser(session.userId);
 
   return {
-    props: { user },
+    props: { user, googleAPI },
   };
 }

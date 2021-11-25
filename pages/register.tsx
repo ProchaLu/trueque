@@ -10,7 +10,11 @@ import LayoutBeforeLogin from '../components/LayoutBeforeLogin';
 import { Errors } from '../util/types';
 import { RegisterResponse } from './api/register';
 
-type Props = { refreshUsername: () => void; csrfToken: string };
+type Props = {
+  refreshUsername: () => void;
+  csrfToken: string;
+  googleAPI: string;
+};
 
 const RegisterPage = (props: Props) => {
   const [username, setUsername] = useState('');
@@ -24,10 +28,10 @@ const RegisterPage = (props: Props) => {
 
   const router = useRouter();
 
-  const libraries = ['places'];
+  const libraries: string[] = ['places'];
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: YOUR_API_KEY,
+    googleMapsApiKey: props.googleAPI,
     libraries,
   });
 
@@ -172,11 +176,14 @@ const RegisterPage = (props: Props) => {
                             ? { backgroundColor: '#BBE1FA', cursor: 'pointer' }
                             : { backgroundColor: '#fff', cursor: 'pointer' };
                           return (
-                            <div
-                              key={`li-suggestion-${suggestion.placeId}`}
-                              {...getSuggestionItemProps(suggestion, { style })}
-                            >
-                              {suggestion.description}
+                            <div key={`li-suggestion-${suggestion.placeId}`}>
+                              <div
+                                {...getSuggestionItemProps(suggestion, {
+                                  style,
+                                })}
+                              >
+                                {suggestion.description}
+                              </div>
                             </div>
                           );
                         })}
@@ -229,6 +236,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
+  const googleAPI = process.env.GOOGLE_API_KEY;
 
   const sessionToken = context.req.cookies.sessionToken;
 
@@ -249,6 +257,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
       csrfToken: createToken(),
+      googleAPI,
     },
   };
 }
