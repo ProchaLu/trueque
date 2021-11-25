@@ -1,30 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import {
   deleteWantlistItemByWantlistId,
   getWantlistbyItemUserId,
 } from '../../../util/database';
 
-export type RegisterRequest = {
-  id: number;
-  user_id: number;
-  user_exchange_item_id: number;
-  item_user_id: number;
-  item_id: number;
-};
-
-export type Wantlist = {
-  user_id: number;
-  user_exchange_item_id: number;
-  item_user_id: number;
-  item_id: number;
-};
-
-export type RegisterResponse = { wantlist: Wantlist };
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<RegisterResponse>,
-) {
+export default async function handler(req, res) {
   if (req.method === 'GET') {
     const wantlistItem = await getWantlistbyItemUserId(
       Number(req.query.username),
