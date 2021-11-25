@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "dotenv ley"
+    "migrate": "dotenv ley",
+    "heroku-postbuild": "yarn migrate up && yarn build"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.1",
@@ -22,6 +23,7 @@
     "js-cookie": "^3.0.1",
     "ley": "^0.7.1",
     "next": "^11.0.0",
+    "pg-connection-string": "^2.5.0",
     "postgres": "2.0.0-beta.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -70,5 +72,8 @@
   "resolutions": {
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-testing-library": "4.6.0"
-  }
+  },
+  "cacheDirectories": [
+    ".next/cache"
+  ]
 }
