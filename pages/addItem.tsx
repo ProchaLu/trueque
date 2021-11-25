@@ -14,7 +14,7 @@ type Props = {
 };
 
 const AddItem = (props: Props) => {
-  const [priceRange, setPriceRange] = useState(10);
+  const [priceRange, setPriceRange] = useState('10');
   const [itemName, setItemName] = useState('');
   const [itemPrice, setItemPrice] = useState(0);
   const [description, setDescription] = useState('');
@@ -166,7 +166,9 @@ const AddItem = (props: Props) => {
                       step={1}
                       min={0}
                       max={100}
-                      onChange={(e) => setPriceRange(e.currentTarget.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setPriceRange(e.currentTarget.value)
+                      }
                     />
                     <span>100%</span>
                   </>
