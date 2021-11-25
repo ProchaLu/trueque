@@ -26,7 +26,7 @@ const AddItem = (props: Props) => {
 
   const userId = props.userId;
 
-  const uploadImage = async (event) => {
+  const uploadImage = async (event: any) => {
     const files = event.currentTarget.files;
     const formData = new FormData();
     formData.append('file', files[0]);
