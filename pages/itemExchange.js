@@ -1,23 +1,12 @@
-import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../components/Layout';
-import { Item } from '../util/database';
 import { Errors } from '../util/types';
-import { User } from './api/users/[userId]';
-import { RegisterResponse } from './api/wantlist/addWantlist';
 
-type Props = {
-  user: User;
-  exchangeItem: Item;
-  notificationLength?: number;
-  itemPriceRange: Item;
-};
-
-const ItemExchange = (props: Props) => {
+const ItemExchange = (props) => {
   const router = useRouter();
 
-  const [errors, setErrors] = useState<Errors>([]);
+  const [errors, setErrors] = useState < Errors > [];
 
   const onClickYes = async () => {
     const registerResponse = await fetch('api/wantlist/addWantlist', {
@@ -32,7 +21,7 @@ const ItemExchange = (props: Props) => {
         itemId: props.itemPriceRange.id,
       }),
     });
-    const addWantlistJson = (await registerResponse.json()) as RegisterResponse;
+    const addWantlistJson = await registerResponse.json();
     if ('errors' in addWantlistJson) {
       setErrors(addWantlistJson.errors);
       return;
@@ -94,7 +83,7 @@ const ItemExchange = (props: Props) => {
 
 export default ItemExchange;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
   const {
     getValidSessionByToken,
     getItemsRandomPriceRangeNotUserId,
@@ -102,7 +91,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     getItemsRandomNotUserId,
   } = await import('../util/database');
 
-  const exchangeItemId: string = context.req.cookies.item;
+  const exchangeItemId = context.req.cookies.item;
 
   const exchangeItem = await getItemByItemId(Number(exchangeItemId));
 
