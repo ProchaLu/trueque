@@ -1,5 +1,4 @@
 import { useLoadScript } from '@react-google-maps/api';
-import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import PlacesAutocomplete, {
@@ -7,26 +6,18 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 import Layout from '../components/Layout';
-import { User } from '../util/database';
-import { Errors } from '../util/types';
 
-type Props = {
-  notificationLength?: number;
-  user: User;
-  googleAPI: string;
-};
-
-const EditUser = (props: Props) => {
+const EditUser = (props) => {
   const [newName, setNewName] = useState('');
   const [newMail, setNewMail] = useState('');
   const [newAddress, setNewAddress] = useState('');
-  const [errors] = useState<Errors>([]);
+  const [errors] = useState([]);
   const [newLat, setNewLat] = useState(0);
   const [newLng, setNewLng] = useState(0);
 
   const router = useRouter();
 
-  const libraries: string[] = ['places'];
+  const libraries = ['places'];
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: props.googleAPI,
@@ -36,11 +27,11 @@ const EditUser = (props: Props) => {
   if (loadError) return 'Error loading maps';
   if (!isLoaded) return 'Loading Maps';
 
-  const handleChange = (value: string) => {
+  const handleChange = (value) => {
     setNewAddress(value);
   };
 
-  const handleSelect = async (value: string) => {
+  const handleSelect = async (value) => {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
     setNewAddress(value);
@@ -48,14 +39,7 @@ const EditUser = (props: Props) => {
     setNewLng(latLng.lng);
   };
 
-  const updateUser = async (
-    id: number,
-    name: string,
-    mail: string,
-    address: string,
-    lat: number,
-    lng: number,
-  ) => {
+  const updateUser = async (id, name, mail, address, lat, lng) => {
     await fetch(`/api/users/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -200,7 +184,7 @@ const EditUser = (props: Props) => {
 
 export default EditUser;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
   const { getValidSessionByToken, getUser } = await import('../util/database');
 
   const sessionToken = context.req.cookies.sessionToken;
