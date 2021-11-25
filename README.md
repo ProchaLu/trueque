@@ -1,6 +1,6 @@
 # TRUEQUE
 
-## Trueque is a item exchange platform, where users can upload items and search for items that are
+## Trueque is a item exchange platform, where users can upload items and search for items they want to swap!
 
 ## Technologies
 
