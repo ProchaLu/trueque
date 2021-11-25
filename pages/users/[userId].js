@@ -1,19 +1,12 @@
-import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
-import { User } from '../../util/database';
 
-type Props = {
-  user: User;
-  notificationLength?: number;
-};
-
-const SingleUser = (props: Props) => {
+const SingleUser = (props) => {
   const router = useRouter();
   const [notificationLength, setNotificationLength] = useState();
 
-  const deleteUser = async (id: number) => {
+  const deleteUser = async (id) => {
     await fetch(`/api/users/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -24,6 +17,8 @@ const SingleUser = (props: Props) => {
   useEffect(() => {
     setNotificationLength(props.notificationLength);
   }, [props.notificationLength]);
+
+  console.log(notificationLength);
 
   return (
     <Layout notificationLength={props.notificationLength}>
@@ -64,7 +59,7 @@ const SingleUser = (props: Props) => {
 
 export default SingleUser;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context) {
   const { getUser, getUserBySessionToken, getWantlistbyItemUserId } =
     await import('../../util/database');
 
