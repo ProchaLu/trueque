@@ -9,10 +9,6 @@ export default async function handler(req, res) {
   const token = req.cookies.sessionToken;
   const session = await getValidSessionByToken(token);
 
-  console.log('req', req.query.userId);
-
-  console.log('session', session.userId);
-
   if (!session) {
     res.status(404).send({
       errors: [{ message: 'Not a valid Session' }],
