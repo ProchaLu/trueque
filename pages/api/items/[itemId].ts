@@ -1,10 +1,14 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import {
   deleteItemByItemId,
   getItemByItemId,
   updateItemByItemId,
 } from '../../../util/database';
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method === 'GET') {
     const item = await getItemByItemId(Number(req.query.id));
     res.status(200).json(item);

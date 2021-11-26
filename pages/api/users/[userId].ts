@@ -1,3 +1,4 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import {
   deleteUserById,
   getUser,
@@ -5,7 +6,10 @@ import {
   updateUserById,
 } from '../../../util/database';
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const token = req.cookies.sessionToken;
   const session = await getValidSessionByToken(token);
 
