@@ -5,8 +5,8 @@ describe('Navigation', () => {
     /*     // Login Page
     cy.get('[data-cy="login"]').should('be.visible').click();
     // Login User
-    cy.get('[data-cy="username"]').type('aa');
-    cy.get('[data-cy="password"]').type('aa');
+    cy.get('[data-cy="username"]').type('Lukas');
+    cy.get('[data-cy="password"]').type('lukas');
     // press Log In
     cy.get('[data-cy="loginButton"]').should('be.visible').click();
     // click around
