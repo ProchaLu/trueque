@@ -117,7 +117,7 @@ const EditItem = (props: Props) => {
                     <span>0%</span>
                     <Range
                       className="border"
-                      value={newPriceRange}
+                      value={Number(newPriceRange)}
                       step={1}
                       min={0}
                       max={100}

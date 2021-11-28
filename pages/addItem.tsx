@@ -162,7 +162,7 @@ const AddItem = (props: Props) => {
                     <span>0%</span>
                     <Range
                       className="border"
-                      value={priceRange}
+                      value={Number(priceRange)}
                       step={1}
                       min={0}
                       max={100}
