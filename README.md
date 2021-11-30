@@ -27,8 +27,8 @@ Upload images from items you want to swap. Add a price and start searching for i
 - TailwindCSS
 - Jest unit tests
 - Cypress E2E tests
-- FIGMA
-- DrawSQL
+- FIGMA https://www.figma.com/file/gTDHdVhRiSiB7HHxpwLSd3/final-project?node-id=0%3A1
+- DrawSQL https://drawsql.app/my-team-16/diagrams/final-project#
 
 ## Setup instructions
 
