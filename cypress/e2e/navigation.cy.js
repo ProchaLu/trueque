@@ -2,7 +2,7 @@ describe('Navigation', () => {
   it('should navigate to homepage, login and logout', () => {
     // Navigate to home page
     cy.visit('http://localhost:3000');
-    /*     // Login Page
+    // Login Page
     cy.get('[data-cy="login"]').should('be.visible').click();
     // Login User
     cy.get('[data-cy="username"]').type('Lukas');
@@ -13,6 +13,6 @@ describe('Navigation', () => {
     cy.get('[data-cy="userMenu"]').should('be.visible');
     cy.get('[data-cy="userMenu"]').click();
     // logout
-    cy.get('[data-cy="logout"]').should('be.visible').click(); */
+    cy.get('[data-cy="logout"]').should('be.visible').click();
   });
 });
